@@ -172,7 +172,7 @@ fetch('/user/block/'+id , {
                                     <td>
                                 <a>{user.name}</a>
                                       <br />
-                                      <small>Created 01.01.2015</small>
+                                <small>Created { user.date ?  user.date.split('T')[0] : 'not Specified'  }</small>
                                     </td>
                                     <td>
                                      {user.email}

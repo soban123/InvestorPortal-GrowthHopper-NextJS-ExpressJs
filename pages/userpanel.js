@@ -2,6 +2,7 @@ import Reactc, { useEffect , useState } from 'react'
 import Layout from './LayoutForUser/layout';
 import { Bar } from 'react-chartjs-2';
 import DateRangePicker from './daterangepicker'
+import { start } from 'nprogress';
 
 export default function userpanel() {
 
@@ -123,15 +124,19 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
       console.log(allmonthdata)
       let arr = [];
       let dataarr = [];
-
+      var monthFromData = 0 ; 
       allmonthdata.forEach(element => {
-        let month = element.month > 11 ? element.month - 12 : element.month ; 
-        arr.push(monthNames[month])
+        monthFromData = element.month > 11 ? element.month - 12 : element.month ; 
+        arr.push(monthNames[monthFromData])
         dataarr.push(element.revenue)
       });
 
+      let startmonth = allmonthdata[0].month ; 
       
-      if( month > 6) { dataarr.splice( month - 6  , dataarr.length)  } else{ dataarr.splice( month  , dataarr.length)   }
+      let diff = month -  startmonth > 0 ? month -  startmonth : startmonth - month ; 
+      
+      console.log( 'dif'  ,  diff);
+      dataarr.splice(  diff , dataarr.length) ;  
       console.log('allmonthdata' , dataarr , arr)
       
       setData({   labels:arr ,  datasets : [  { label:"All Time Returns" , backgroundColor: chartdata.datasets[0].backgroundColor , borderWidth: 1 , borderColor:chartdata.datasets[0].borderColor  , data:dataarr}]  })
@@ -310,6 +315,10 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
           let { email } = userData ;
           let month = new Date().getMonth() ;
 
+          
+
+          
+
           if (diffinmnth > 6 ){
             alert('Month Difference should less than 6 ')
             return ;
@@ -318,41 +327,54 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
           let arr2 = [];
           let dataarr = [];
 
+          let firstmonth =   await  fetch('/user/investorsmonthlyreturns/'+email);
+            let firstmonthdata = await firstmonth.json();
+            console.log('first' , firstmonthdata[0] )
+
+
+            
+            let resmonth =   await  fetch('/user/investorsmonthlyreturns/'+email+"/"+(strtmnt));
+            let monthdata = await resmonth.json();
+      
+            console.log('monthdata'  ,monthdata)
+
+           
+      
+           //  let arr = [];
+            let start = monthdata[0].startDay ; 
+            let end = monthdata[0].endDay ; 
+
           if ( diffinmnth == 0 ){
                // Month Data
             arr = [] ;
-               let resmonth =   await  fetch('/user/investorsmonthlyreturns/'+email+"/"+(strtmnt));
-               let monthdata = await resmonth.json();
-         
-               console.log('monthdata'  ,monthdata)
-         
-         
-              //  let arr = [];
-               let start = monthdata[0].startDay ; 
-               let end = monthdata[0].endDay ; 
 
               let responseRange =   await  fetch('/user/investorsdailyreturns/'+email+"/"+(strtmnt));
               let data = await responseRange.json();
 
-              data[0]?.dailyprofit.forEach( (element , index ) => {
-                if(Number(element ) < 0 ){
-                  dataarr.push(0)
-                }
-                else{
-                  
-
-                    dataarr.push(Math.floor(Number(element)))
-                  
-                }
-              });
-  
+              if( firstmonthdata[0].month == month ){
               
+                data[0]?.dailyprofit.forEach( (element , index ) => {
+                  if(Number(element ) < 0 || index < start  ){
+                    dataarr.push(0)
+                  }
+                  else{
+                    
   
+                      dataarr.push(Math.floor(Number(element)))
+                    
+                  }
+                });
+    
+                
+    
+                
+              }
+              
               for ( let i = strday ; i < endday ; i++){  if( i  > 30 ) {arr.push(  ( i  ) - 30   ) } else{ arr.push(  i ) }  } 
-  
+            
               // dataarr.splice(start , dataarr.length , 0)
 
-              console.log('TodayEarning'  ,data)
+              console.log('TodayEarning'  ,dataarr)
 
               setData({   labels:arr ,  datasets : [  { label:"Daily Retunrs" , backgroundColor: chartdata.datasets[0].backgroundColor , borderWidth: 1 , borderColor:chartdata.datasets[0].borderColor  , data:dataarr}]  })
 
@@ -370,7 +392,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                 }
                 else{
                   
-                  if( 14 > index ){
+                  if( start > index ){
                   dataarr.push(0)
 
 
@@ -423,13 +445,22 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                 let resstrtdata = await responseRange.json();
                 console.log('TodayEarning'  ,resstrtdata)
   
-                resstrtdata[0]?.dailyprofit.forEach( (element ) => {
+                resstrtdata[0]?.dailyprofit.forEach( (element , index ) => {
                   if(Number(element ) < 0 ){
                     dataarr.push(0)
                   }
                   else{
                     
-                    dataarr.push(Math.floor(Number(element)))
+                  
+                      if( start > index ){
+                      dataarr.push(0)
+    
+    
+                      }else{
+
+                        dataarr.push(Math.floor(Number(element)))
+                      }
+
                     
                   }
                 });
