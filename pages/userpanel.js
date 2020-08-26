@@ -314,10 +314,20 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
           console.log(diffinmnth)
           let { email } = userData ;
           let month = new Date().getMonth() ;
+          let ToDay = new Date().getDate() ;
 
           
-
+          if( strtmnt > month || endmnt > month ){
+            alert('Month not Started ')
+            return ;
+          }
           
+          if( strtmnt == month ){
+            if( strday > ToDay || endday > ToDay ){
+              alert('Day not Started ')
+            return ;
+            }
+          }
 
           if (diffinmnth > 6 ){
             alert('Month Difference should less than 6 ')
@@ -344,6 +354,14 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
             let start = monthdata[0].startDay ; 
             let end = monthdata[0].endDay ; 
 
+
+            if( strtmnt == month ){
+              if( strday < start ){
+                alert('Day  Started from  ' + start )
+              return ;
+              }
+            }
+
           if ( diffinmnth == 0 ){
                // Month Data
             arr = [] ;
@@ -354,7 +372,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
               if( firstmonthdata[0].month == month ){
               
                 data[0]?.dailyprofit.forEach( (element , index ) => {
-                  if(Number(element ) < 0 || index < start  ){
+                  if(Number(element ) < 0   ){
                     dataarr.push(0)
                   }
                   else{
@@ -370,7 +388,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                 
               }
               
-              for ( let i = strday ; i < endday ; i++){  if( i  > 30 ) {arr.push(  ( i  ) - 30   ) } else{ arr.push(  i ) }  } 
+              for ( let i = strday ; i <= endday ; i++){  if( i  > 30 ) {arr.push(  ( i  ) - 30   ) } else{ arr.push(  i ) }  } 
             
               // dataarr.splice(start , dataarr.length , 0)
 
@@ -392,14 +410,11 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                 }
                 else{
                   
-                  if( start > index ){
-                  dataarr.push(0)
-
-
-                  }else{
+                
+                  
 
                     dataarr.push(Math.floor(Number(element)))
-                  }
+                  
 
                   
                 }
@@ -452,14 +467,10 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                   else{
                     
                   
-                      if( start > index ){
-                      dataarr.push(0)
-    
-    
-                      }else{
+                     
 
                         dataarr.push(Math.floor(Number(element)))
-                      }
+                      
 
                     
                   }
@@ -506,13 +517,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                 }
                 else{
                   
-                  // if( 14 > index ){
-                  // dataarr.push(0)
-
-
-                  // }else{
-
-                  // }
+                
                   
                   dataarr.push(Math.floor(Number(element)))
                   
