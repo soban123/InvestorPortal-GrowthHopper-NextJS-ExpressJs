@@ -272,7 +272,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     })
 
     const handleClose = () => setmodalshow(false);
-    const handleShow = () => setShow(true);
     
    const  handleSelectForDate = (ranges) => {
 
@@ -291,8 +290,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
       else{
         alert('Select Correct date')
       }
-
-
       
     }
 
@@ -302,22 +299,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
           let month = new Date().getMonth() ;
           let ToDay = new Date().getDate() ;
          
-          
-          
-          
-          // if( strtmnt == month ){
-          //   if( strday > ToDay || endday > ToDay ){
-          //     alert('Day not Started ')
-          //     dayNotStarted = 1 ; 
-              
-          //   return ;
-          //   }
-          // }
-
-          // if (diffinmnth > 6 ){
-          //   alert('Month Difference should less than 6 ')
-          //   return ;
-          // }
 
           let arr = [];
           let arr2 = [];
@@ -345,12 +326,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
             let end = monthdata[0].endDay ; 
 
 
-            // if( strtmnt == month ){
-            //   if( strday < start ){
-            //     alert('Day  Started from  ' + start )
-            //   return ;
-            //   }
-            // }
+            
 
             if ( diffinmnth == 0 ){
                // Month Data
@@ -380,7 +356,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
               
               for ( let i = strday ; i <= endday ; i++){  if( i  > 30 ) {arr.push(  ( i  ) - 30   ) } else{ arr.push(  i ) }  } 
             
-              // dataarr.splice(start , dataarr.length , 0)
+              dataarr.splice(0 , strday - start )
 
 
               setData({   labels:arr ,  datasets : [  { label:"Daily Retunrs" , backgroundColor: chartdata.datasets[0].backgroundColor , borderWidth: 1 , borderColor:chartdata.datasets[0].borderColor  , data:dataarr}]  })
@@ -408,7 +384,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
                 }
               });
   
-              
+              dataarr.splice(0 , strday - start )
   
               for ( let i = strday ; i < 31 ; i++){  if( i  > 30 ) {arr.push(  ( i  ) - 30   ) } else{ arr.push(  i ) }  } 
   
