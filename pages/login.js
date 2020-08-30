@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
+import Toast from './Helpers/Toast';
 
 const Login = (props) => {
   let [email, setEmail] = useState('');
@@ -56,7 +57,11 @@ const Login = (props) => {
       })
       .catch((error) => {
         console.error('Error:', error);
-        alert('Incorrect Id/Password');
+        // alert('Incorrect Id/Password');
+        Toast.fire({
+          icon: 'error',
+          title: 'Invalid Email or Password',
+        });
       });
   };
 
@@ -125,8 +130,8 @@ const Login = (props) => {
         style={{ bottom: '0px' }}
         className='position-absolute w-100 text-center bg-transparent m-0 p-0 mb-4'
       >
-        <h6>GrowthHopper</h6>
-        <h6>Copyrights &copy; 2020. All rights reserved.</h6>
+        <p className='m-0'>GrowthHopper</p>
+        <p className='m-0'>Copyrights &copy; 2020. All rights reserved.</p>
       </footer>
     </div>
   );
