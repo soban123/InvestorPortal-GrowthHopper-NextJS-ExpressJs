@@ -114,7 +114,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     const Alltimegraph = async() =>{
       let { email } = userData ;
       let month = new Date().getMonth() ;
-      month = 12 ;
       let allmonth =   await  fetch('/user/investorsmonthlyreturns/'+email);
       let allmonthdata = await allmonth.json();
 
