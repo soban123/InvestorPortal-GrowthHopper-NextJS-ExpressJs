@@ -46,7 +46,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     const Last7daysgraph = async() =>{
       let { email } = userData ;
       let month = new Date().getMonth() ;
-      // month = 11;
       let day = new Date().getDate();
           // day = 14;
       let Currentmonth =   await  fetch('/user/investorsmonthlyreturns/'+email+"/"+(month));
@@ -115,6 +114,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     const Alltimegraph = async() =>{
       let { email } = userData ;
       let month = new Date().getMonth() ;
+      month = 12 ;
       let allmonth =   await  fetch('/user/investorsmonthlyreturns/'+email);
       let allmonthdata = await allmonth.json();
 
@@ -122,7 +122,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
       let dataarr = [];
       var monthFromData = 0 ; 
       allmonthdata.forEach(element => {
-        monthFromData = element.month > 11 ? element.month - 12 : element.month ; 
+        monthFromData =  element.month ; 
         arr.push(monthNames[monthFromData])
         dataarr.push(element.revenue)
       });
@@ -142,8 +142,9 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     const handleLastMonthGraph = async () =>{
       let { email } = userData ;
       let month = new Date().getMonth() ;
-        //  let month = 12;
-      let Currentmonth =   await  fetch('/user/investorsmonthlyreturns/'+email+"/"+(month-1));
+      let lastmonthCalc =  month - 1 < 0 ? 11 : month - 1    ; 
+
+      let Currentmonth =   await  fetch('/user/investorsmonthlyreturns/'+email+"/"+(lastmonthCalc));
       let Currmonthdata = await Currentmonth.json();
 
 
@@ -152,10 +153,10 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
         let end = Currmonthdata.length > 0 ? Currmonthdata[0].endDay  : 30 ; 
        for ( let i = 0 ; i < 30 ; i++){  if( start + i > 30 ) {arr.push(  (start + i  ) - 30   ) } else{ arr.push( start + i ) }  } 
        setstarttoendArr(arr)
-  
+      
         //Daily Data
             let dataarr = [];
-            let response =   await  fetch('/user/investorsdailyreturns/'+email+"/"+(month-1));
+            let response =   await  fetch('/user/investorsdailyreturns/'+email+"/"+(lastmonthCalc));
             let data = await response.json();
             let sum = 0 ;
             data[0]?.dailyprofit.forEach(element => {

@@ -13,7 +13,10 @@ export default function DateRange ({handleSelectForDate , modalshow , handleClos
 
 
     let userData = JSON.parse(localStorage.getItem('userData'))
-    let email = userData.email ; 
+
+    if( userData ){
+
+      let email = userData.email ; 
 
     function add_months(dt, n) 
     {
@@ -40,6 +43,8 @@ export default function DateRange ({handleSelectForDate , modalshow , handleClos
     else{
       setendDate( `${endYear}-${Number(endMonth)+1}-${endDay}` )
     }
+    }
+    
     
   } , []  )
 

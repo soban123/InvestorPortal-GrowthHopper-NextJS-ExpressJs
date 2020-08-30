@@ -90,7 +90,7 @@ router.post('/', function(req, res, next) {
 
     // 
   
-    const   month = new Date().getMonth() ; 
+    let   month = new Date().getMonth() ; 
     const openDay = new Date().getDate();
   
     var arr = [];
@@ -115,7 +115,7 @@ let calPackageperc = package.split('')[0] ;
         revenue   ,
         startDay : openDay ,
         endDay: openDay ,
-        month : Number(month) + i > 12 ? (month + i) - 12 : Number(month) + i
+        month : Number(month) + i > 11 ? (month + i) - 12 : Number(month) + i
       })
 
       monthlyreturns.save()
@@ -159,7 +159,7 @@ for( let t = 0 ; t < 31 ; t++ ){
 //     console.log('revenue' , revenue)
     const dailyreturns = new investorsdailyreturns({
       email ,
-      month: month + i > 12 ? (month + i) - 12 : month + i,
+      month: Number(month) + i > 11 ? (month + i) - 12 : Number(month) + i , 
       dailyprofit: arrofdailyprofit
     })
 
