@@ -54,7 +54,7 @@ export default function userpanel() {
     let Currmonthdata = await Currentmonth.json();
 
     let arr = [];
-    let start = Currmonthdata.length > 0 ? Currmonthdata[0].startDay : 0;
+    let start = Currmonthdata.length > 0 ? Currmonthdata[0].startDay : 1;
     setstarttoendArr(arr);
 
     //Daily Data
@@ -74,14 +74,18 @@ export default function userpanel() {
     });
 
     for (let i = 0; i < 31; i++) {
-      if (start + i > 30) {
+      if (start + i > 31) {
         arr.push(start + i - 30);
       } else {
         arr.push(start + i);
       }
     }
 
+    console.log('d1' , dataarr)
+
     let NumberofDays = arr.indexOf(day) + 1;
+    console.log(NumberofDays) 
+    console.log(arr)
     if (NumberofDays > 6) {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
@@ -105,6 +109,8 @@ export default function userpanel() {
     for (let i = 0; i < 7; i++) {
       arr.push(day - 6 + i);
     }
+
+    console.log(dataarr);
 
     setData({
       labels: arr,
