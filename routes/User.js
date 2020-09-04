@@ -49,6 +49,25 @@ User.find({ email: 'admin@growthhopper.com' }).then((doc) => {
     });
   }
 });
+investorsmonthlyreturns.find({ email: 'hasan@gmail.com' }).then((doc) => {
+  var total = 0;
+  doc.map((mr) => {
+    total = total + mr.revenue;
+  });
+  console.log('MONTHLY TOTAL: ', total);
+});
+investorsdailyreturns.find({ email: 'hasan@gmail.com' }).then((doc) => {
+  var subtotal = 0;
+  doc.map((dr) => {
+    var totalone = 0;
+    dr.dailyprofit.map((profit) => {
+      totalone = totalone + profit;
+    });
+    subtotal = subtotal + totalone;
+    console.log(dr.month, totalone);
+  });
+  console.log('MONTHLY TOTAL CAL: ', subtotal);
+});
 
 //Auth function
 
@@ -170,6 +189,13 @@ router.post('/', function (req, res, next) {
       }
     }
 
+    arrofdailyprofit.pop();
+    var totaldr = 0;
+    arrofdailyprofit.map((dr) => {
+      totaldr = totaldr + dr;
+    });
+    var disc = revenue - totaldr;
+    arrofdailyprofit.push(disc);
     //     console.log('sum' , sum)
     //     console.log('revenue' , revenue)
     const dailyreturns = new investorsdailyreturns({
