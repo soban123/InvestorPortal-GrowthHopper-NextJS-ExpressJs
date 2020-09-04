@@ -10,9 +10,9 @@ export default function userpanel() {
   const [TodayEarning, setTodayEarning] = useState(0);
   const [YesterdayEarning, setYesterdayEarning] = useState(0);
   const [modalshow, setmodalshow] = useState(false);
-
   const [starttoendArr, setstarttoendArr] = useState([]);
-
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const monthNames = [
     'January',
     'February',
@@ -45,13 +45,13 @@ export default function userpanel() {
   //Last 7 Days
   const Last7daysgraph = async () => {
     let { email } = userData;
-    let month = new Date().getMonth();
-    let day = new Date().getDate();
+    let month = currentMonth;
+    let day = currentDay;
     // day = 14;
-    let Currentmonth = await fetch(
+    let apiCall = await fetch(
       '/user/investorsmonthlyreturns/' + email + '/' + month
     );
-    let Currmonthdata = await Currentmonth.json();
+    let Currmonthdata = await apiCall.json();
 
     let arr = [];
     let start = Currmonthdata.length > 0 ? Currmonthdata[0].startDay : 0;
@@ -124,7 +124,7 @@ export default function userpanel() {
 
   const Alltimegraph = async () => {
     let { email } = userData;
-    let month = new Date().getMonth();
+    let month = currentMonth;
     let allmonth = await fetch('/user/investorsmonthlyreturns/' + email);
     let allmonthdata = await allmonth.json();
 
@@ -160,13 +160,13 @@ export default function userpanel() {
   //Last Month Function
   const handleLastMonthGraph = async () => {
     let { email } = userData;
-    let month = new Date().getMonth();
+    let month = currentMonth;
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
-    let Currentmonth = await fetch(
+    let apiCall = await fetch(
       '/user/investorsmonthlyreturns/' + email + '/' + lastmonthCalc
     );
-    let Currmonthdata = await Currentmonth.json();
+    let Currmonthdata = await apiCall.json();
 
     let arr = [];
     let start = Currmonthdata.length > 0 ? Currmonthdata[0].startDay : 0;
@@ -215,7 +215,7 @@ export default function userpanel() {
     const parsedUserData = await JSON.parse(userDatas);
 
     if (parsedUserData) {
-      let month = new Date().getMonth();
+      let month = currentMonth;
       // month = 8
 
       setUserData(parsedUserData);
@@ -230,10 +230,10 @@ export default function userpanel() {
 
       setLastmonthdata(dataLastmonthly[0]);
 
-      let Currentmonth = await fetch(
+      let apiCall = await fetch(
         '/user/investorsmonthlyreturns/' + parsedUserData.email + '/' + month
       );
-      let Currmonthdata = await Currentmonth.json();
+      let Currmonthdata = await apiCall.json();
 
       let arr = [];
       let start = Currmonthdata[0].startDay;
@@ -264,7 +264,7 @@ export default function userpanel() {
         }
       });
 
-      let day = new Date().getDate();
+      let day = currentDay;
       // day = 30
       let startdate = arr.indexOf(day);
       dataarr.splice(startdate + 1, dataarr.length);
@@ -348,7 +348,7 @@ export default function userpanel() {
   const RangeGraph = async (strday, strtmnt, endday, endmnt) => {
     const diffinmnth = endmnt - strtmnt;
     let { email } = userData;
-    let month = new Date().getMonth();
+    let month = currentMonth;
     let ToDay = new Date().getDate();
 
     let arr = [];
