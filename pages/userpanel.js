@@ -283,7 +283,7 @@ export default function userpanel() {
       });
 
       let day = currentDay;
-      day = 20;
+      // day = 20;
       let startdate = arr.indexOf(day);
       dataarr.splice(startdate + 1, dataarr.length);
       const todayprofit = dataarr.slice(startdate, startdate + 1);
