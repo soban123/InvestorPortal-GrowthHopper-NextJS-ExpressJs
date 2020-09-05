@@ -107,7 +107,11 @@ export default function userpanel() {
 
     arr = [];
     for (let i = 0; i < 7; i++) {
-      arr.push(day - 6 + i);
+      if( day - 6 + i < 1 ){
+        arr.push(30 + day - 6 + i )
+      }else{
+        arr.push(day - 6 + i);
+      }
     }
 
     console.log(dataarr);
@@ -165,8 +169,8 @@ export default function userpanel() {
 
   //Last Month Function
   const handleLastMonthGraph = async () => {
+    let month = currentMonth ; 
     let { email } = userData;
-    let month = currentMonth;
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
     let apiCall = await fetch(
@@ -217,12 +221,17 @@ export default function userpanel() {
 
   //This Month Graph Function
   const thismonthgraph = async () => {
+  
     const userDatas = localStorage.getItem('userData');
-    const parsedUserData = await JSON.parse(userDatas);
-
+    let parsedUserData = await JSON.parse(userDatas);
+    let month = currentMonth ; 
     if (parsedUserData) {
-      let month = currentMonth;
-      // month = 8
+      console.log('currentMonth' , currentMonth )
+      if( parsedUserData.month ){
+         month = parsedUserData.month;
+        setCurrentMonth(parsedUserData.month);
+      }
+  
 
       setUserData(parsedUserData);
       //Last Month Data
@@ -234,12 +243,15 @@ export default function userpanel() {
       );
       let dataLastmonthly = await responseLastmonth.json();
 
+      console.log('monthly returns' ,dataLastmonthly   )
       setLastmonthdata(dataLastmonthly[0]);
 
       let apiCall = await fetch(
         '/user/investorsmonthlyreturns/' + parsedUserData.email + '/' + month
       );
       let Currmonthdata = await apiCall.json();
+
+      console.log(' curr monthly returns' ,Currmonthdata   )
 
       let arr = [];
       let start = Currmonthdata[0].startDay;
@@ -271,7 +283,7 @@ export default function userpanel() {
       });
 
       let day = currentDay;
-      // day = 30
+      day = 20;
       let startdate = arr.indexOf(day);
       dataarr.splice(startdate + 1, dataarr.length);
       const todayprofit = dataarr.slice(startdate, startdate + 1);
@@ -304,7 +316,12 @@ export default function userpanel() {
   };
 
   useEffect(() => {
+   
+
+    
     thismonthgraph();
+
+
   }, []);
 
   const [chartdata, setData] = useState({
@@ -402,7 +419,7 @@ export default function userpanel() {
         );
         let data = await responseRange.json();
 
-        if (firstmonthdata[0].month == month) {
+        
           data[0]?.dailyprofit.forEach((element, index) => {
             if (Number(element) < 0) {
               dataarr.push(0);
@@ -410,7 +427,6 @@ export default function userpanel() {
               dataarr.push(Math.floor(Number(element)));
             }
           });
-        }
 
         for (let i = strday; i <= endday; i++) {
           if (i > 30) {
@@ -571,6 +587,8 @@ export default function userpanel() {
       }
     }
   };
+
+  console.log('month' , currentMonth)
 
   return (
     <Layout>

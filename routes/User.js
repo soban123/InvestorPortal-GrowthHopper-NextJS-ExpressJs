@@ -220,27 +220,28 @@ router.put('/update/:id', authenticateToken, function (req, res) {
   const {
     name,
     email,
-    password,
+    month,
     role = 'investor',
     amount,
     package,
   } = req.body;
-  console.log('id', id);
 
-  bcrypt.hash(password, saltRounds, function (err, hash) {
-    const updatedUser = {
-      name,
-      email,
-      password: hash,
-      role,
-      amount,
-      package,
-    };
+  const updatedUser = {
+    name,
+    email,
+    month,
+    role,
+    amount,
+    package,
+  };
 
-    User.findByIdAndUpdate(id, updatedUser).then((result) =>
-      res.json('User has been updated')
-    );
-  });
+  User.findByIdAndUpdate(id, updatedUser).then((result) =>
+    res.json('User has been updated')
+  );
+
+  // bcrypt.hash(password, saltRounds, function (err, hash) {
+    
+  // });
 });
 
 router.put('/block/:id', authenticateToken, function (req, res) {
