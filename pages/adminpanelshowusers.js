@@ -11,7 +11,7 @@ function adminpanelshowusers(props) {
     id: '',
     name: '',
     email: '',
-    password: '',
+    month: '',
     amount: '',
     package: '6%',
   });
@@ -105,7 +105,7 @@ function adminpanelshowusers(props) {
           email: data.email,
           id: data._id,
           package: data.package,
-          password: data.password,
+          month: data.month,
           amount: data.amount,
         });
       });
@@ -319,7 +319,7 @@ function adminpanelshowusers(props) {
                     for='middle-name'
                     className='col-form-label col-md-3 col-sm-3 label-align'
                   >
-                    Password
+                    Start Month
                   </label>
                   <div className='col-md-6 col-sm-6'>
                     <input
@@ -327,10 +327,10 @@ function adminpanelshowusers(props) {
                       className='form-control'
                       type='text'
                       name='middle-name'
-                      value={userData.password}
+                      value={userData.month}
                       disabled={ModalView == 'update' ? false : true}
                       onChange={(e) =>
-                        setUserData({ ...userData, password: e.target.value })
+                        setUserData({ ...userData, month: e.target.value })
                       }
                     />
                   </div>
