@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
-import Toast from './Helpers/Toast';
+import Swal from 'sweetalert2';
 
 const Login = (props) => {
   let [email, setEmail] = useState('');
   let [password, setPassword] = useState('');
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
 
   useEffect(() => {
     const isLogin = localStorage.getItem('login');
