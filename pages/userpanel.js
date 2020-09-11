@@ -235,16 +235,16 @@ export default function userpanel() {
 
       setUserData(parsedUserData);
       //Last Month Data
-      let responseLastmonth = await fetch(
-        '/user/investorsmonthlyreturns/' +
-          parsedUserData._id +
-          '/' +
-          (month - 1)
-      );
-      let dataLastmonthly = await responseLastmonth.json();
+      // let responseLastmonth = await fetch(
+      //   '/user/investorsmonthlyreturns/' +
+      //     parsedUserData._id +
+      //     '/' +
+      //     (month - 1)
+      // );
+      // let dataLastmonthly = await responseLastmonth.json();
 
-      console.log('monthly returns' ,dataLastmonthly   )
-      setLastmonthdata(dataLastmonthly[0]);
+      // console.log('monthly returns' ,dataLastmonthly   )
+      // setLastmonthdata(dataLastmonthly[0]);
 
       let apiCall = await fetch(
         '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month
