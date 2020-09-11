@@ -44,12 +44,12 @@ export default function userpanel() {
 
   //Last 7 Days
   const Last7daysgraph = async () => {
-    let { email } = userData;
+    let { _id } = userData;
     let month = currentMonth;
     let day = currentDay;
     // day = 14;
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + email + '/' + month
+      '/user/investorsmonthlyreturns/' + _id + '/' + month
     );
     let Currmonthdata = await apiCall.json();
 
@@ -60,7 +60,7 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + email + '/' + month
+      '/user/investorsdailyreturns/' + _id + '/' + month
     );
     let data = await response.json();
     let sum = 0;
@@ -90,7 +90,7 @@ export default function userpanel() {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
       let resData = await fetch(
-        '/user/investorsdailyreturns/' + email + '/' + (month - 1)
+        '/user/investorsdailyreturns/' + _id + '/' + (month - 1)
       );
       let lastMonthDays = await resData.json();
       var newLastDays = [];
@@ -133,9 +133,9 @@ export default function userpanel() {
   //All TIme
 
   const Alltimegraph = async () => {
-    let { email } = userData;
+    let { _id } = userData;
     let month = currentMonth;
-    let allmonth = await fetch('/user/investorsmonthlyreturns/' + email);
+    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id);
     let allmonthdata = await allmonth.json();
 
     let arr = [];
@@ -170,11 +170,11 @@ export default function userpanel() {
   //Last Month Function
   const handleLastMonthGraph = async () => {
     let month = currentMonth ; 
-    let { email } = userData;
+    let { _id } = userData;
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + email + '/' + lastmonthCalc
+      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc
     );
     let Currmonthdata = await apiCall.json();
 
@@ -193,7 +193,7 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + email + '/' + lastmonthCalc
+      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc
     );
     let data = await response.json();
     let sum = 0;
@@ -237,7 +237,7 @@ export default function userpanel() {
       //Last Month Data
       let responseLastmonth = await fetch(
         '/user/investorsmonthlyreturns/' +
-          parsedUserData.email +
+          parsedUserData._id +
           '/' +
           (month - 1)
       );
@@ -247,7 +247,7 @@ export default function userpanel() {
       setLastmonthdata(dataLastmonthly[0]);
 
       let apiCall = await fetch(
-        '/user/investorsmonthlyreturns/' + parsedUserData.email + '/' + month
+        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month
       );
       let Currmonthdata = await apiCall.json();
 
@@ -268,7 +268,7 @@ export default function userpanel() {
       //Daily Data
       let dataarr = [];
       let response = await fetch(
-        '/user/investorsdailyreturns/' + parsedUserData.email + '/' + month
+        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month
       );
       let data = await response.json();
       let sum = 0;
@@ -370,7 +370,7 @@ export default function userpanel() {
 
   const RangeGraph = async (strday, strtmnt, endday, endmnt) => {
     const diffinmnth = endmnt - strtmnt;
-    let { email } = userData;
+    let { _id } = userData;
     let month = currentMonth;
     let ToDay = new Date().getDate();
 
@@ -378,7 +378,7 @@ export default function userpanel() {
     let arr2 = [];
     let dataarr = [];
 
-    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + email);
+    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id);
     let firstmonthdata = await firstmonth.json();
 
     if (firstmonthdata[0].month > strtmnt || firstmonthdata[0].month > endmnt) {
@@ -403,7 +403,7 @@ export default function userpanel() {
       });
     } else {
       let resmonth = await fetch(
-        '/user/investorsmonthlyreturns/' + email + '/' + strtmnt
+        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt
       );
       let monthdata = await resmonth.json();
 
@@ -415,7 +415,7 @@ export default function userpanel() {
         arr = [];
 
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + email + '/' + strtmnt
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt
         );
         let data = await responseRange.json();
 
@@ -454,7 +454,7 @@ export default function userpanel() {
         arr = [];
         arr2 = [];
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + email + '/' + strtmnt
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt
         );
         let resstrtdata = await responseRange.json();
 
@@ -477,7 +477,7 @@ export default function userpanel() {
         }
 
         let resendmnth = await fetch(
-          '/user/investorsdailyreturns/' + email + '/' + endmnt
+          '/user/investorsdailyreturns/' + _id + '/' + endmnt
         );
         let resenddata = await resendmnth.json();
 
@@ -512,7 +512,7 @@ export default function userpanel() {
         for (let i = 0; i <= diffinmnth; i++) {
           if (i == 0) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + email + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
             );
             let resstrtdata = await responseRange.json();
 
@@ -533,7 +533,7 @@ export default function userpanel() {
             }
           } else if (i == diffinmnth) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + email + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
             );
             let resstrtdata = await responseRange.json();
 
@@ -554,7 +554,7 @@ export default function userpanel() {
             }
           } else {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + email + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
             );
             let resstrtdata = await responseRange.json();
 

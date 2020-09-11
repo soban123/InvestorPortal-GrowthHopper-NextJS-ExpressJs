@@ -14,6 +14,7 @@ var jwt = require('jsonwebtoken');
 
 var cron = require('node-cron');
 const { json } = require('express');
+const { find } = require('../models/User');
 
 //
 mongoose.connect(MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -97,7 +98,7 @@ router.get('/:id', async function (req, res, next) {
   res.send(user);
 });
 
-router.post('/', function (req, res, next) {
+router.post('/',async function (req, res, next) {
   console.log(req.body);
   const {
     name,
@@ -108,11 +109,11 @@ router.post('/', function (req, res, next) {
     package,
   } = req.body;
 
-  bcrypt.hash(password, saltRounds, function (err, hash) {
-    console.log(hash);
+   bcrypt.hash(password, saltRounds, async function (err, hash) {
+    // console.log(hash);
 
     const month = new Date().getMonth();
-    const newuser = new User({
+    const newuser =  new User({
       name,
       email,
       password: hash,
@@ -121,17 +122,12 @@ router.post('/', function (req, res, next) {
       package,
       month,
     });
-    newuser
-      .save()
-      .then((result) => {
-        res.json(result);
-      })
-      .catch((err) => res.status(400).json(err));
-  });
+   
+      let postUser = await newuser.save() ; 
+      console.log('postUser' , postUser) ; 
 
-  //
 
-  let month = new Date().getMonth();
+    
   const openDay = new Date().getDate();
 
   var arr = [];
@@ -148,6 +144,7 @@ router.post('/', function (req, res, next) {
 
     const monthlyreturns = new investorsmonthlyreturns({
       email,
+      userId : postUser._id , 
       package,
       amount,
       packageprecent,
@@ -196,10 +193,10 @@ router.post('/', function (req, res, next) {
     });
     var disc = revenue - totaldr;
     arrofdailyprofit.push(disc);
-    //     console.log('sum' , sum)
-    //     console.log('revenue' , revenue)
+    
     const dailyreturns = new investorsdailyreturns({
       email,
+      userId : postUser._id ,
       month: Number(month) + i > 11 ? month + i - 12 : Number(month) + i,
       dailyprofit: arrofdailyprofit,
     });
@@ -208,11 +205,18 @@ router.post('/', function (req, res, next) {
       .save()
 
       .then((result) => {
+        console.log(result)
         res.json(result);
       })
 
       .catch((err) => res.json({ err }));
   }
+    
+    
+  });
+
+
+  
 });
 
 router.put('/update/:id', authenticateToken, function (req, res) {
@@ -238,6 +242,10 @@ router.put('/update/:id', authenticateToken, function (req, res) {
   User.findByIdAndUpdate(id, updatedUser).then((result) =>
     res.json('User has been updated')
   );
+
+
+  
+
 
   // bcrypt.hash(password, saltRounds, function (err, hash) {
     
@@ -308,64 +316,34 @@ router.post('/login', async function (req, res, next) {
   }
 });
 
-router.post('/investorsmonthlyreturns', function (req, res, next) {
-  const { email, amount, package, returns } = req.body;
 
-  const month = new Date().getMonth();
 
-  var arr = [];
-  while (arr.length < 6) {
-    var r = Math.floor(Math.random() * 6);
-    if (arr.indexOf(r) === -1) arr.push(r);
-  }
-
-  let calPackageperc = package.split('')[0];
-
-  for (let i = 0; i < 6; i++) {
-    const monthlyreturns = new investorsmonthlyreturns({
-      email,
-      package,
-      amount,
-      packageprecent: (calPackageperc + arr[i]) / 10,
-      month: Number(month) + i,
-    });
-
-    monthlyreturns
-      .save()
-      .then((result) => {
-        console.log(result);
-        res.json(result);
-      })
-      .catch((err) => res.json(err));
-  }
-});
-
-router.get('/investorsdailyreturns/:email/:month', async function (
+router.get('/investorsdailyreturns/:id/:month', async function (
   req,
   res,
   next
 ) {
-  const { email, month } = req.params;
+  const { id , month } = req.params;
 
-  const dailyreturns = await investorsdailyreturns.find({ email, month });
+  const dailyreturns = await investorsdailyreturns.find({ month, userId : `${id}` });
   res.send(dailyreturns);
 });
 
-router.get('/investorsmonthlyreturns/:email/:month', async function (
+router.get('/investorsmonthlyreturns/:id/:month', async function (
   req,
   res,
   next
 ) {
-  const { email, month } = req.params;
+  const { id ,  month } = req.params;
 
-  const monthlyreturns = await investorsmonthlyreturns.find({ email, month });
+  const monthlyreturns = await investorsmonthlyreturns.find({ userId : `${id}`, month });
   res.send(monthlyreturns);
 });
 
-router.get('/investorsmonthlyreturns/:email', async function (req, res, next) {
-  const { email, month } = req.params;
+router.get('/investorsmonthlyreturns/:id', async function (req, res, next) {
+  const { id, month } = req.params;
 
-  const monthlyreturns = await investorsmonthlyreturns.find({ email });
+  const monthlyreturns = await investorsmonthlyreturns.find({ userId : `${id}` });
   res.send(monthlyreturns);
 });
 
