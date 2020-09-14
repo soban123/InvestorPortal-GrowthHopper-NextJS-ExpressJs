@@ -14,27 +14,32 @@ export default function DateRange({
   useEffect(() => {
     let userData = JSON.parse(localStorage.getItem('userData'));
 
-    function add_months(dt, n) {
-      return new Date(dt.setMonth(dt.getMonth() + n));
+    if( userData ){
+
+      function add_months(dt, n) {
+        return new Date(dt.setMonth(dt.getMonth() + n));
+      }
+  
+      setStartDate(`${userData.date.split('T')[0]}`);
+      let dt = new Date(`${userData.date.split('T')[0]}`);
+      let lastDate = add_months(dt, 6);
+      let endMonth = lastDate.getMonth();
+      let endDay = lastDate.getDate();
+      let endYear = lastDate.getFullYear();
+  
+      let now = new Date();
+      let nowMonth = now.getMonth();
+      let nowDay = now.getDate();
+      let nowYear = now.getFullYear();
+  
+      if (now < dt) {
+        setendDate(`${nowYear}-${Number(nowMonth) + 1}-${nowDay}`);
+      } else {
+        setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
+      }
     }
 
-    setStartDate(`${userData.date.split('T')[0]}`);
-    let dt = new Date(`${userData.date.split('T')[0]}`);
-    let lastDate = add_months(dt, 6);
-    let endMonth = lastDate.getMonth();
-    let endDay = lastDate.getDate();
-    let endYear = lastDate.getFullYear();
-
-    let now = new Date();
-    let nowMonth = now.getMonth();
-    let nowDay = now.getDate();
-    let nowYear = now.getFullYear();
-
-    if (now < dt) {
-      setendDate(`${nowYear}-${Number(nowMonth) + 1}-${nowDay}`);
-    } else {
-      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
-    }
+  
   }, []);
 
   const [state, setState] = useState([
