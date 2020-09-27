@@ -1,7 +1,11 @@
 import React , {useState , useEffect} from 'react'
+import { useRouter } from 'next/router'
 import Layout from './LayoutAdmin/layout'
 
+
 export default function addreports() {
+
+    const router = useRouter()
 
     const [title , setTitle] = useState('')
     const [file , setfile] = useState({})
@@ -22,6 +26,7 @@ export default function addreports() {
             return response.json();
           }).then(function(data) {
             console.log(data)
+            router.push('/reports')
           });
         
     }
