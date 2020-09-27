@@ -1,3 +1,4 @@
+
 const next = require ('next');
 const express  = require('express');
 var bodyParser = require('body-parser')
@@ -9,16 +10,12 @@ const UserRouter = require('./routes/User');
 const NewsRouter = require('./routes/News');
 const ReportRouter = require('./routes/Reports');
 
-
-
 const handle = app.getRequestHandler();
 
-app.prepare()
-.then(()=>{
+app.prepare().then(() => {
+  const server = express();
 
-    const server = express() ;
-
-    server.use(express.json())
+  server.use(express.json());
 
     server.use('/uploads', express.static('uploads'))
 
@@ -34,16 +31,17 @@ app.prepare()
 
     
 
-    server.post('/user', (req , res)=>{
-        console.log(req.body);
-        res.json(req.body);
-    })
 
-    server.get('*',(req , res )=>{
-        return handle(req, res);
-    })
-    server.listen( port , err =>{
-        if (err) throw err ;
-        console.log('listeninng on' ,  port);
-    } )
-})
+  server.post('/user', (req, res) => {
+    console.log(req.body);
+    res.json(req.body);
+  });
+
+  server.get('*', (req, res) => {
+    return handle(req, res);
+  });
+  server.listen(port, (err) => {
+    if (err) throw err;
+    console.log('listeninng on', port);
+  });
+});

@@ -221,14 +221,7 @@ router.post('/',async function (req, res, next) {
 
 router.put('/update/:id', authenticateToken, function (req, res) {
   const { id } = req.params;
-  const {
-    name,
-    email,
-    month,
-    role = 'investor',
-    amount,
-    package,
-  } = req.body;
+  const { name, email, month, role = 'investor', amount, package } = req.body;
 
   const updatedUser = {
     name,
@@ -248,7 +241,7 @@ router.put('/update/:id', authenticateToken, function (req, res) {
 
 
   // bcrypt.hash(password, saltRounds, function (err, hash) {
-    
+
   // });
 });
 
