@@ -33,7 +33,7 @@ export default function topnav({ userData }) {
                   data-toggle='dropdown'
                   aria-expanded='false'
                 >
-                  <img src='images/img.jpg' alt='' /> {userData.name}
+                  <img src='images/img.jpg' alt='' /> {userData?.name}
                 </a>
                 <div
                   className='dropdown-menu dropdown-usermenu pull-right'

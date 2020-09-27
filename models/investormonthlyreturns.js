@@ -10,7 +10,10 @@ const investorsmonthlyreturns = Schema({
         max : 22 ,
         
       },
- 
+      userId :{
+        type: String ,
+        required: true,
+      }  ,
      
       amount:{
         type:Number , 

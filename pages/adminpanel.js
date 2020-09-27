@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import Sidebar from './Components/Sidebar';
-import Topnav from './Components/topnav';
-import FooterContent from './Components/footercontents';
 import { withRouter } from 'next/router';
 import Layout from './LayoutAdmin/layout';
-import { set } from 'nprogress';
-import Toast from './Helpers/Toast';
+import Swal from 'sweetalert2';
 
 function adminPanel(props) {
   let [name, setName] = useState('');
@@ -14,6 +10,18 @@ function adminPanel(props) {
   let [amount, setamount] = useState('');
   let [packages, setpackages] = useState('');
   const [CRIShowHide, setCRI] = useState('hide');
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +52,12 @@ function adminPanel(props) {
           title: 'Investor Added',
         });
       });
+
+
+      fetch(`http://localhost/website/setuser/${email}/${password}`)
+      .then(res => res.json())
+      .then(data => console.log(data))
+
   };
 
   const handleCRI = (e) => {

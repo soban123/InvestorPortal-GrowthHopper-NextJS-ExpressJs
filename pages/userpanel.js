@@ -44,12 +44,12 @@ export default function userpanel() {
 
   //Last 7 Days
   const Last7daysgraph = async () => {
-    let { email } = userData;
+    let { _id } = userData;
     let month = currentMonth;
     let day = currentDay;
     // day = 14;
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + email + '/' + month
+      '/user/investorsmonthlyreturns/' + _id + '/' + month
     );
     let Currmonthdata = await apiCall.json();
 
@@ -60,7 +60,7 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + email + '/' + month
+      '/user/investorsdailyreturns/' + _id + '/' + month
     );
     let data = await response.json();
     let sum = 0;
@@ -90,7 +90,7 @@ export default function userpanel() {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
       let resData = await fetch(
-        '/user/investorsdailyreturns/' + email + '/' + (month - 1)
+        '/user/investorsdailyreturns/' + _id + '/' + (month - 1)
       );
       let lastMonthDays = await resData.json();
       var newLastDays = [];
@@ -133,9 +133,9 @@ export default function userpanel() {
   //All TIme
 
   const Alltimegraph = async () => {
-    let { email } = userData;
+    let { _id } = userData;
     let month = currentMonth;
-    let allmonth = await fetch('/user/investorsmonthlyreturns/' + email);
+    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id);
     let allmonthdata = await allmonth.json();
 
     let arr = [];
@@ -170,11 +170,11 @@ export default function userpanel() {
   //Last Month Function
   const handleLastMonthGraph = async () => {
     let month = currentMonth ; 
-    let { email } = userData;
+    let { _id } = userData;
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + email + '/' + lastmonthCalc
+      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc
     );
     let Currmonthdata = await apiCall.json();
 
@@ -193,7 +193,7 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + email + '/' + lastmonthCalc
+      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc
     );
     let data = await response.json();
     let sum = 0;
@@ -235,19 +235,19 @@ export default function userpanel() {
 
       setUserData(parsedUserData);
       //Last Month Data
-      let responseLastmonth = await fetch(
-        '/user/investorsmonthlyreturns/' +
-          parsedUserData.email +
-          '/' +
-          (month - 1)
-      );
-      let dataLastmonthly = await responseLastmonth.json();
+      // let responseLastmonth = await fetch(
+      //   '/user/investorsmonthlyreturns/' +
+      //     parsedUserData._id +
+      //     '/' +
+      //     (month - 1)
+      // );
+      // let dataLastmonthly = await responseLastmonth.json();
 
-      console.log('monthly returns' ,dataLastmonthly   )
-      setLastmonthdata(dataLastmonthly[0]);
+      // console.log('monthly returns' ,dataLastmonthly   )
+      // setLastmonthdata(dataLastmonthly[0]);
 
       let apiCall = await fetch(
-        '/user/investorsmonthlyreturns/' + parsedUserData.email + '/' + month
+        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month
       );
       let Currmonthdata = await apiCall.json();
 
@@ -268,7 +268,7 @@ export default function userpanel() {
       //Daily Data
       let dataarr = [];
       let response = await fetch(
-        '/user/investorsdailyreturns/' + parsedUserData.email + '/' + month
+        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month
       );
       let data = await response.json();
       let sum = 0;
@@ -370,7 +370,7 @@ export default function userpanel() {
 
   const RangeGraph = async (strday, strtmnt, endday, endmnt) => {
     const diffinmnth = endmnt - strtmnt;
-    let { email } = userData;
+    let { _id } = userData;
     let month = currentMonth;
     let ToDay = new Date().getDate();
 
@@ -378,7 +378,7 @@ export default function userpanel() {
     let arr2 = [];
     let dataarr = [];
 
-    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + email);
+    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id);
     let firstmonthdata = await firstmonth.json();
 
     if (firstmonthdata[0].month > strtmnt || firstmonthdata[0].month > endmnt) {
@@ -403,7 +403,7 @@ export default function userpanel() {
       });
     } else {
       let resmonth = await fetch(
-        '/user/investorsmonthlyreturns/' + email + '/' + strtmnt
+        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt
       );
       let monthdata = await resmonth.json();
 
@@ -415,7 +415,7 @@ export default function userpanel() {
         arr = [];
 
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + email + '/' + strtmnt
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt
         );
         let data = await responseRange.json();
 
@@ -454,7 +454,7 @@ export default function userpanel() {
         arr = [];
         arr2 = [];
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + email + '/' + strtmnt
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt
         );
         let resstrtdata = await responseRange.json();
 
@@ -477,7 +477,7 @@ export default function userpanel() {
         }
 
         let resendmnth = await fetch(
-          '/user/investorsdailyreturns/' + email + '/' + endmnt
+          '/user/investorsdailyreturns/' + _id + '/' + endmnt
         );
         let resenddata = await resendmnth.json();
 
@@ -512,7 +512,7 @@ export default function userpanel() {
         for (let i = 0; i <= diffinmnth; i++) {
           if (i == 0) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + email + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
             );
             let resstrtdata = await responseRange.json();
 
@@ -533,7 +533,7 @@ export default function userpanel() {
             }
           } else if (i == diffinmnth) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + email + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
             );
             let resstrtdata = await responseRange.json();
 
@@ -554,7 +554,7 @@ export default function userpanel() {
             }
           } else {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + email + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
             );
             let resstrtdata = await responseRange.json();
 
@@ -667,873 +667,8 @@ export default function userpanel() {
         </div>
         <br />
 
-        <div className='row'>
-          <div className='col-md-4 col-sm-4 '>
-            <div className='x_panel tile fixed_height_320'>
-              <div className='x_title'>
-                <h2>App Versions</h2>
-                <ul className='nav navbar-right panel_toolbox'>
-                  <li>
-                    <a className='collapse-link'>
-                      <i className='fa fa-chevron-up'></i>
-                    </a>
-                  </li>
-                  <li className='dropdown'>
-                    <a
-                      href='#'
-                      className='dropdown-toggle'
-                      data-toggle='dropdown'
-                      role='button'
-                      aria-expanded='false'
-                    >
-                      <i className='fa fa-wrench'></i>
-                    </a>
-                    <div
-                      className='dropdown-menu'
-                      aria-labelledby='dropdownMenuButton'
-                    >
-                      <a className='dropdown-item' href='#'>
-                        Settings 1
-                      </a>
-                      <a className='dropdown-item' href='#'>
-                        Settings 2
-                      </a>
-                    </div>
-                  </li>
-                  <li>
-                    <a className='close-link'>
-                      <i className='fa fa-close'></i>
-                    </a>
-                  </li>
-                </ul>
-                <div className='clearfix'></div>
-              </div>
-              <div className='x_content'>
-                <h4>App Usage across versions</h4>
-                <div className='widget_summary'>
-                  <div className='w_left w_25'>
-                    <span>0.1.5.2</span>
-                  </div>
-                  <div className='w_center w_55'>
-                    <div className='progress'>
-                      <div
-                        className='progress-bar bg-green'
-                        role='progressbar'
-                        aria-valuenow='60'
-                        aria-valuemin='0'
-                        aria-valuemax='100'
-                        style={{ width: '66%' }}
-                      >
-                        <span className='sr-only'>60% Complete</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='w_right w_20'>
-                    <span>123k</span>
-                  </div>
-                  <div className='clearfix'></div>
-                </div>
-
-                <div className='widget_summary'>
-                  <div className='w_left w_25'>
-                    <span>0.1.5.3</span>
-                  </div>
-                  <div className='w_center w_55'>
-                    <div className='progress'>
-                      <div
-                        className='progress-bar bg-green'
-                        role='progressbar'
-                        aria-valuenow='60'
-                        aria-valuemin='0'
-                        aria-valuemax='100'
-                        style={{ width: '45%' }}
-                      >
-                        <span className='sr-only'>60% Complete</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='w_right w_20'>
-                    <span>53k</span>
-                  </div>
-                  <div className='clearfix'></div>
-                </div>
-                <div className='widget_summary'>
-                  <div className='w_left w_25'>
-                    <span>0.1.5.4</span>
-                  </div>
-                  <div className='w_center w_55'>
-                    <div className='progress'>
-                      <div
-                        className='progress-bar bg-green'
-                        role='progressbar'
-                        aria-valuenow='60'
-                        aria-valuemin='0'
-                        aria-valuemax='100'
-                        style={{ width: '25%' }}
-                      >
-                        <span className='sr-only'>60% Complete</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='w_right w_20'>
-                    <span>23k</span>
-                  </div>
-                  <div className='clearfix'></div>
-                </div>
-                <div className='widget_summary'>
-                  <div className='w_left w_25'>
-                    <span>0.1.5.5</span>
-                  </div>
-                  <div className='w_center w_55'>
-                    <div className='progress'>
-                      <div
-                        className='progress-bar bg-green'
-                        role='progressbar'
-                        aria-valuenow='60'
-                        aria-valuemin='0'
-                        aria-valuemax='100'
-                        style={{ width: '5%' }}
-                      >
-                        <span className='sr-only'>60% Complete</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='w_right w_20'>
-                    <span>3k</span>
-                  </div>
-                  <div className='clearfix'></div>
-                </div>
-                <div className='widget_summary'>
-                  <div className='w_left w_25'>
-                    <span>0.1.5.6</span>
-                  </div>
-                  <div className='w_center w_55'>
-                    <div className='progress'>
-                      <div
-                        className='progress-bar bg-green'
-                        role='progressbar'
-                        aria-valuenow='60'
-                        aria-valuemin='0'
-                        aria-valuemax='100'
-                        style={{ width: '2%' }}
-                      >
-                        <span className='sr-only'>60% Complete</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='w_right w_20'>
-                    <span>1k</span>
-                  </div>
-                  <div className='clearfix'></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='col-md-4 col-sm-4 '>
-            <div className='x_panel tile fixed_height_320 overflow_hidden'>
-              <div className='x_title'>
-                <h2>Device Usage</h2>
-                <ul className='nav navbar-right panel_toolbox'>
-                  <li>
-                    <a className='collapse-link'>
-                      <i className='fa fa-chevron-up'></i>
-                    </a>
-                  </li>
-                  <li className='dropdown'>
-                    <a
-                      href='#'
-                      className='dropdown-toggle'
-                      data-toggle='dropdown'
-                      role='button'
-                      aria-expanded='false'
-                    >
-                      <i className='fa fa-wrench'></i>
-                    </a>
-                    <div
-                      className='dropdown-menu'
-                      aria-labelledby='dropdownMenuButton'
-                    >
-                      <a className='dropdown-item' href='#'>
-                        Settings 1
-                      </a>
-                      <a className='dropdown-item' href='#'>
-                        Settings 2
-                      </a>
-                    </div>
-                  </li>
-                  <li>
-                    <a className='close-link'>
-                      <i className='fa fa-close'></i>
-                    </a>
-                  </li>
-                </ul>
-                <div className='clearfix'></div>
-              </div>
-              <div className='x_content'>
-                <table className='' style={{ width: '100%' }}>
-                  <tr>
-                    <th style={{ width: '37%' }}>
-                      <p>Top 5</p>
-                    </th>
-                    <th>
-                      <div className='col-lg-7 col-md-7 col-sm-7 '>
-                        <p className=''>Device</p>
-                      </div>
-                      <div className='col-lg-5 col-md-5 col-sm-5 '>
-                        <p className=''>Progress</p>
-                      </div>
-                    </th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <canvas
-                        className='canvasDoughnut'
-                        height='140'
-                        width='140'
-                        style={{ margin: '15px 10px 10px 0' }}
-                      ></canvas>
-                    </td>
-                    <td>
-                      <table className='tile_info'>
-                        <tr>
-                          <td>
-                            <p>
-                              <i className='fa fa-square blue'></i>IOS{' '}
-                            </p>
-                          </td>
-                          <td>30%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <p>
-                              <i className='fa fa-square green'></i>Android{' '}
-                            </p>
-                          </td>
-                          <td>10%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <p>
-                              <i className='fa fa-square purple'></i>Blackberry{' '}
-                            </p>
-                          </td>
-                          <td>20%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <p>
-                              <i className='fa fa-square aero'></i>Symbian{' '}
-                            </p>
-                          </td>
-                          <td>15%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <p>
-                              <i className='fa fa-square red'></i>Others{' '}
-                            </p>
-                          </td>
-                          <td>30%</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div className='col-md-4 col-sm-4 '>
-            <div className='x_panel tile fixed_height_320'>
-              <div className='x_title'>
-                <h2>Quick Settings</h2>
-                <ul className='nav navbar-right panel_toolbox'>
-                  <li>
-                    <a className='collapse-link'>
-                      <i className='fa fa-chevron-up'></i>
-                    </a>
-                  </li>
-                  <li className='dropdown'>
-                    <a
-                      href='#'
-                      className='dropdown-toggle'
-                      data-toggle='dropdown'
-                      role='button'
-                      aria-expanded='false'
-                    >
-                      <i className='fa fa-wrench'></i>
-                    </a>
-                    <div
-                      className='dropdown-menu'
-                      aria-labelledby='dropdownMenuButton'
-                    >
-                      <a className='dropdown-item' href='#'>
-                        Settings 1
-                      </a>
-                      <a className='dropdown-item' href='#'>
-                        Settings 2
-                      </a>
-                    </div>
-                  </li>
-                  <li>
-                    <a className='close-link'>
-                      <i className='fa fa-close'></i>
-                    </a>
-                  </li>
-                </ul>
-                <div className='clearfix'></div>
-              </div>
-              <div className='x_content'>
-                <div className='dashboard-widget-content'>
-                  <ul className='quick-list'>
-                    <li>
-                      <i className='fa fa-calendar-o'></i>
-                      <a href='#'>Settings</a>
-                    </li>
-                    <li>
-                      <i className='fa fa-bars'></i>
-                      <a href='#'>Subscription</a>
-                    </li>
-                    <li>
-                      <i className='fa fa-bar-chart'></i>
-                      <a href='#'>Auto Renewal</a>{' '}
-                    </li>
-                    <li>
-                      <i className='fa fa-line-chart'></i>
-                      <a href='#'>Achievements</a>
-                    </li>
-                    <li>
-                      <i className='fa fa-bar-chart'></i>
-                      <a href='#'>Auto Renewal</a>{' '}
-                    </li>
-                    <li>
-                      <i className='fa fa-line-chart'></i>
-                      <a href='#'>Achievements</a>
-                    </li>
-                    <li>
-                      <i className='fa fa-area-chart'></i>
-                      <a href='#'>Logout</a>
-                    </li>
-                  </ul>
-
-                  <div className='sidebar-widget'>
-                    <h4>Profile Completion</h4>
-                    <canvas
-                      width='150'
-                      height='80'
-                      id='chart_gauge_01'
-                      className=''
-                      style={{ width: '160px', height: '100px' }}
-                    ></canvas>
-                    <div className='goal-wrapper'>
-                      <span id='gauge-text' className='gauge-value pull-left'>
-                        0
-                      </span>
-                      <span className='gauge-value pull-left'>%</span>
-                      <span id='goal-text' className='goal-value pull-right'>
-                        100%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className='row'>
-          <div className='col-md-4 col-sm-4 '>
-            <div className='x_panel'>
-              <div className='x_title'>
-                <h2>
-                  Recent Activities <small>Sessions</small>
-                </h2>
-                <ul className='nav navbar-right panel_toolbox'>
-                  <li>
-                    <a className='collapse-link'>
-                      <i className='fa fa-chevron-up'></i>
-                    </a>
-                  </li>
-                  <li className='dropdown'>
-                    <a
-                      href='#'
-                      className='dropdown-toggle'
-                      data-toggle='dropdown'
-                      role='button'
-                      aria-expanded='false'
-                    >
-                      <i className='fa fa-wrench'></i>
-                    </a>
-                    <div
-                      className='dropdown-menu'
-                      aria-labelledby='dropdownMenuButton'
-                    >
-                      <a className='dropdown-item' href='#'>
-                        Settings 1
-                      </a>
-                      <a className='dropdown-item' href='#'>
-                        Settings 2
-                      </a>
-                    </div>
-                  </li>
-                  <li>
-                    <a className='close-link'>
-                      <i className='fa fa-close'></i>
-                    </a>
-                  </li>
-                </ul>
-                <div className='clearfix'></div>
-              </div>
-              <div className='x_content'>
-                <div className='dashboard-widget-content'>
-                  <ul className='list-unstyled timeline widget'>
-                    <li>
-                      <div className='block'>
-                        <div className='block_content'>
-                          <h2 className='title'>
-                            <a>
-                              Who Needs Sundance When You’ve
-                              Got&nbsp;Crowdfunding?
-                            </a>
-                          </h2>
-                          <div className='byline'>
-                            <span>13 hours ago</span> by <a>Jane Smith</a>
-                          </div>
-                          <p className='excerpt'>
-                            Film festivals used to be do-or-die moments for
-                            movie makers. They were where you met the producers
-                            that could fund your project, and if the buyers
-                            liked your flick, they’d pay to Fast-forward and…{' '}
-                            <a>Read&nbsp;More</a>
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className='block'>
-                        <div className='block_content'>
-                          <h2 className='title'>
-                            <a>
-                              Who Needs Sundance When You’ve
-                              Got&nbsp;Crowdfunding?
-                            </a>
-                          </h2>
-                          <div className='byline'>
-                            <span>13 hours ago</span> by <a>Jane Smith</a>
-                          </div>
-                          <p className='excerpt'>
-                            Film festivals used to be do-or-die moments for
-                            movie makers. They were where you met the producers
-                            that could fund your project, and if the buyers
-                            liked your flick, they’d pay to Fast-forward and…{' '}
-                            <a>Read&nbsp;More</a>
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className='block'>
-                        <div className='block_content'>
-                          <h2 className='title'>
-                            <a>
-                              Who Needs Sundance When You’ve
-                              Got&nbsp;Crowdfunding?
-                            </a>
-                          </h2>
-                          <div className='byline'>
-                            <span>13 hours ago</span> by <a>Jane Smith</a>
-                          </div>
-                          <p className='excerpt'>
-                            Film festivals used to be do-or-die moments for
-                            movie makers. They were where you met the producers
-                            that could fund your project, and if the buyers
-                            liked your flick, they’d pay to Fast-forward and…{' '}
-                            <a>Read&nbsp;More</a>
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className='block'>
-                        <div className='block_content'>
-                          <h2 className='title'>
-                            <a>
-                              Who Needs Sundance When You’ve
-                              Got&nbsp;Crowdfunding?
-                            </a>
-                          </h2>
-                          <div className='byline'>
-                            <span>13 hours ago</span> by <a>Jane Smith</a>
-                          </div>
-                          <p className='excerpt'>
-                            Film festivals used to be do-or-die moments for
-                            movie makers. They were where you met the producers
-                            that could fund your project, and if the buyers
-                            liked your flick, they’d pay to Fast-forward and…{' '}
-                            <a>Read&nbsp;More</a>
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='col-md-8 col-sm-8 '>
-            <div className='row'>
-              <div className='col-md-12 col-sm-12 '>
-                <div className='x_panel'>
-                  <div className='x_title'>
-                    <h2>
-                      Visitors location <small>geo-presentation</small>
-                    </h2>
-                    <ul className='nav navbar-right panel_toolbox'>
-                      <li>
-                        <a className='collapse-link'>
-                          <i className='fa fa-chevron-up'></i>
-                        </a>
-                      </li>
-                      <li className='dropdown'>
-                        <a
-                          href='#'
-                          className='dropdown-toggle'
-                          data-toggle='dropdown'
-                          role='button'
-                          aria-expanded='false'
-                        >
-                          <i className='fa fa-wrench'></i>
-                        </a>
-                        <div
-                          className='dropdown-menu'
-                          aria-labelledby='dropdownMenuButton'
-                        >
-                          <a className='dropdown-item' href='#'>
-                            Settings 1
-                          </a>
-                          <a className='dropdown-item' href='#'>
-                            Settings 2
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <a className='close-link'>
-                          <i className='fa fa-close'></i>
-                        </a>
-                      </li>
-                    </ul>
-                    <div className='clearfix'></div>
-                  </div>
-                  <div className='x_content'>
-                    <div className='dashboard-widget-content'>
-                      <div className='col-md-4 hidden-small'>
-                        <h2 className='line_30'>
-                          125.7k Views from 60 countries
-                        </h2>
-
-                        <table className='countries_list'>
-                          <tbody>
-                            <tr>
-                              <td>United States</td>
-                              <td className='fs15 fw700 text-right'>33%</td>
-                            </tr>
-                            <tr>
-                              <td>France</td>
-                              <td className='fs15 fw700 text-right'>27%</td>
-                            </tr>
-                            <tr>
-                              <td>Germany</td>
-                              <td className='fs15 fw700 text-right'>16%</td>
-                            </tr>
-                            <tr>
-                              <td>Spain</td>
-                              <td className='fs15 fw700 text-right'>11%</td>
-                            </tr>
-                            <tr>
-                              <td>Britain</td>
-                              <td className='fs15 fw700 text-right'>10%</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div
-                        id='world-map-gdp'
-                        className='col-md-8 col-sm-12 '
-                        style={{ height: '230px' }}
-                      >
-                        {' '}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='row'>
-              {/* <!-- Start to do list --> */}
-              <div className='col-md-6 col-sm-6 '>
-                <div className='x_panel'>
-                  <div className='x_title'>
-                    <h2>
-                      To Do List <small>Sample tasks</small>
-                    </h2>
-                    <ul className='nav navbar-right panel_toolbox'>
-                      <li>
-                        <a className='collapse-link'>
-                          <i className='fa fa-chevron-up'></i>
-                        </a>
-                      </li>
-                      <li className='dropdown'>
-                        <a
-                          href='#'
-                          className='dropdown-toggle'
-                          data-toggle='dropdown'
-                          role='button'
-                          aria-expanded='false'
-                        >
-                          <i className='fa fa-wrench'></i>
-                        </a>
-                        <div
-                          className='dropdown-menu'
-                          aria-labelledby='dropdownMenuButton'
-                        >
-                          <a className='dropdown-item' href='#'>
-                            Settings 1
-                          </a>
-                          <a className='dropdown-item' href='#'>
-                            Settings 2
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <a className='close-link'>
-                          <i className='fa fa-close'></i>
-                        </a>
-                      </li>
-                    </ul>
-                    <div className='clearfix'></div>
-                  </div>
-                  <div className='x_content'>
-                    <div className=''>
-                      <ul className='to_do'>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Schedule
-                            meeting with new client{' '}
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Create
-                            email address for new intern
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Have IT
-                            fix the network printer
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Copy
-                            backups to offsite location
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Food
-                            truck fixie locavors mcsweeney
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Food
-                            truck fixie locavors mcsweeney
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Create
-                            email address for new intern
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Have IT
-                            fix the network printer
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <input type='checkbox' className='flat' /> Copy
-                            backups to offsite location
-                          </p>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* <!-- End to do list -->
-
-                <!-- start of weather widget --> */}
-              <div className='col-md-6 col-sm-6 '>
-                <div className='x_panel'>
-                  <div className='x_title'>
-                    <h2>
-                      Daily active users <small>Sessions</small>
-                    </h2>
-                    <ul className='nav navbar-right panel_toolbox'>
-                      <li>
-                        <a className='collapse-link'>
-                          <i className='fa fa-chevron-up'></i>
-                        </a>
-                      </li>
-                      <li className='dropdown'>
-                        <a
-                          href='#'
-                          className='dropdown-toggle'
-                          data-toggle='dropdown'
-                          role='button'
-                          aria-expanded='false'
-                        >
-                          <i className='fa fa-wrench'></i>
-                        </a>
-                        <div
-                          className='dropdown-menu'
-                          aria-labelledby='dropdownMenuButton'
-                        >
-                          <a className='dropdown-item' href='#'>
-                            Settings 1
-                          </a>
-                          <a className='dropdown-item' href='#'>
-                            Settings 2
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <a className='close-link'>
-                          <i className='fa fa-close'></i>
-                        </a>
-                      </li>
-                    </ul>
-                    <div className='clearfix'></div>
-                  </div>
-                  <div className='x_content'>
-                    <div className='row'>
-                      <div className='col-sm-12'>
-                        <div className='temperature'>
-                          <b>Monday</b>, 07:30 AM
-                          <span>F</span>
-                          <span>
-                            <b>C</b>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className='col-sm-4'>
-                        <div className='weather-icon'>
-                          <canvas
-                            height='84'
-                            width='84'
-                            id='partly-cloudy-day'
-                          ></canvas>
-                        </div>
-                      </div>
-                      <div className='col-sm-8'>
-                        <div className='weather-text'>
-                          <h2>
-                            Texas <br />
-                            <i>Partly Cloudy Day</i>
-                          </h2>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-sm-12'>
-                      <div className='weather-text pull-right'>
-                        <h3 className='degrees'>23</h3>
-                      </div>
-                    </div>
-
-                    <div className='clearfix'></div>
-
-                    <div className='row weather-days'>
-                      <div className='col-sm-2'>
-                        <div className='daily-weather'>
-                          <h2 className='day'>Mon</h2>
-                          <h3 className='degrees'>25</h3>
-                          <canvas
-                            id='clear-day'
-                            width='32'
-                            height='32'
-                          ></canvas>
-                          <h5>
-                            15 <i>km/h</i>
-                          </h5>
-                        </div>
-                      </div>
-                      <div className='col-sm-2'>
-                        <div className='daily-weather'>
-                          <h2 className='day'>Tue</h2>
-                          <h3 className='degrees'>25</h3>
-                          <canvas height='32' width='32' id='rain'></canvas>
-                          <h5>
-                            12 <i>km/h</i>
-                          </h5>
-                        </div>
-                      </div>
-                      <div className='col-sm-2'>
-                        <div className='daily-weather'>
-                          <h2 className='day'>Wed</h2>
-                          <h3 className='degrees'>27</h3>
-                          <canvas height='32' width='32' id='snow'></canvas>
-                          <h5>
-                            14 <i>km/h</i>
-                          </h5>
-                        </div>
-                      </div>
-                      <div className='col-sm-2'>
-                        <div className='daily-weather'>
-                          <h2 className='day'>Thu</h2>
-                          <h3 className='degrees'>28</h3>
-                          <canvas height='32' width='32' id='sleet'></canvas>
-                          <h5>
-                            15 <i>km/h</i>
-                          </h5>
-                        </div>
-                      </div>
-                      <div className='col-sm-2'>
-                        <div className='daily-weather'>
-                          <h2 className='day'>Fri</h2>
-                          <h3 className='degrees'>28</h3>
-                          <canvas height='32' width='32' id='wind'></canvas>
-                          <h5>
-                            11 <i>km/h</i>
-                          </h5>
-                        </div>
-                      </div>
-                      <div className='col-sm-2'>
-                        <div className='daily-weather'>
-                          <h2 className='day'>Sat</h2>
-                          <h3 className='degrees'>26</h3>
-                          <canvas height='32' width='32' id='cloudy'></canvas>
-                          <h5>
-                            10 <i>km/h</i>
-                          </h5>
-                        </div>
-                      </div>
-                      <div className='clearfix'></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* <!-- end of weather widget --> */}
-            </div>
-          </div>
-        </div>
+      
+       
       </div>
       {/* <!-- /page content --> */}
     </Layout>
