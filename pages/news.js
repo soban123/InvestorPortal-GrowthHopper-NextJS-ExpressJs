@@ -126,6 +126,7 @@ export default function news() {
                         {/* <a href="#" class="btn btn-primary">Go somewhere</a> */}
                         
                     </div>
+                <div className='ln_solid'></div>
                    
                   </div>
                         ) } ) }
@@ -193,6 +194,7 @@ export default function news() {
                     <textarea 
                     className='form-control'
                     type='text'
+                    id="editor2"
                     onChange={(e) =>{ setUpdateNews({...updateNews , text : e.target.value}) } }
                     name='middle-name'
                     value = { updateNews.text }

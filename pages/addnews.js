@@ -1,11 +1,19 @@
 import React , {useState , useEffect} from 'react'
+import { useRouter } from 'next/router'
+
 import Layout from './LayoutAdmin/layout'
+
+
+
+
 
 export default function addnews() {
 
+    const router = useRouter()
     const [title , setTitle] = useState('')
     const [text , setText] = useState('')
 
+    
 
     const handleAddNews = (e) => {
         e.preventDefault()
@@ -25,9 +33,11 @@ export default function addnews() {
             return response.json();
           }).then(function(data) {
             console.log(data)
+            router.push('/news')
           });
         
     }
+   
     return (
         <Layout >
 
@@ -74,19 +84,20 @@ export default function addnews() {
                     <div className='item form-group'>
                       <label
                         className='col-form-label col-md-3 col-sm-3 label-align'
-                        for='first-name'
+                        for='editor'
                       >
                         Text <span className='required'>*</span>
                       </label>
                       <div className='col-md-6 col-sm-6'>
                         <textarea 
                           type='text'
-                          id='first-name'
+                          id="editor"
                           required='required'
                           className='form-control'
                           value={text}
                           onChange={(e)=>setText(e.target.value)}
                         />
+                        
                       </div>
                     </div>
                     
@@ -104,7 +115,11 @@ export default function addnews() {
         </div>
       </div>
       {/* <!-- page content --> */}
+     
+      
+      
         
         </Layout>
     )
+    
 }
