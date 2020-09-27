@@ -31,6 +31,34 @@ export default function Sidebar() {
                   </a>
                 </Link>
               </li>
+              <li>
+                <Link href='/news'>
+                  <a>
+                    <i className='fa fa-home'></i> NEWS{' '}
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href='/addnews'>
+                  <a>
+                    <i className='fa fa-home'></i> ADD NEWS{' '}
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href='/reports'>
+                  <a>
+                    <i className='fa fa-home'></i>  REPORTS{' '}
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href='/addreports'>
+                  <a>
+                    <i className='fa fa-home'></i> ADD REPORTS{' '}
+                  </a>
+                </Link>
+              </li>
             </ul>
           </div>
         ) : (
