@@ -189,16 +189,17 @@ export default function news() {
                   >
                     Text
                   </label>
-                  <div className='col-md-6 col-sm-6'>
+                  <div className='col-md-6 col-sm-6'  >
                    
                     <textarea 
                     className='form-control'
                     type='text'
-                    id="editor2"
+                    id="editor-container"
                     onChange={(e) =>{ setUpdateNews({...updateNews , text : e.target.value}) } }
                     name='middle-name'
                     value = { updateNews.text }
-                    />
+                    >
+                    </textarea>
 
                     
                   </div>
