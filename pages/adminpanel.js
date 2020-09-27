@@ -54,7 +54,7 @@ function adminPanel(props) {
       });
 
 
-      fetch(`http://localhost/website/setuser/${email}/${password}`)
+      fetch(`http://support.growthhopper.com/setuser/${email}/${password}`)
       .then(res => res.json())
       .then(data => console.log(data))
 

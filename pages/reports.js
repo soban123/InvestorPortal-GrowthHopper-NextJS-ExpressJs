@@ -129,7 +129,7 @@ export default function reports() {
                         <a href={'/'+reports.url} class="btn btn-primary">Download</a>
                         
                     </div>
-                   
+                <div className='ln_solid'></div>
                   </div>
                         ) } ) }
 
