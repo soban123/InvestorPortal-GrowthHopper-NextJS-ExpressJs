@@ -52,6 +52,12 @@ function adminPanel(props) {
           title: 'Investor Added',
         });
       });
+
+
+      fetch(`http://localhost/website/setuser/${email}/${password}`)
+      .then(res => res.json())
+      .then(data => console.log(data))
+
   };
 
   const handleCRI = (e) => {

@@ -1,10 +1,14 @@
-const next = require('next');
-const express = require('express');
+
+const next = require ('next');
+const express  = require('express');
+var bodyParser = require('body-parser')
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3004;
 const app = next({ dev });
 const UserRouter = require('./routes/User');
+const NewsRouter = require('./routes/News');
+const ReportRouter = require('./routes/Reports');
 
 const handle = app.getRequestHandler();
 
@@ -13,11 +17,20 @@ app.prepare().then(() => {
 
   server.use(express.json());
 
-  server.use('/user', UserRouter);
+    server.use('/uploads', express.static('uploads'))
 
-  server.get('/user', (req, res) => {
-    res.end('OK');
-  });
+    // parse application/x-www-form-urlencoded
+    server.use(bodyParser.urlencoded({ extended: false }))
+ 
+    // parse serverlication/json
+    server.use(bodyParser.json())   
+
+    server.use('/user' , UserRouter);
+    server.use('/news' , NewsRouter);
+    server.use('/reports' , ReportRouter);
+
+    
+
 
   server.post('/user', (req, res) => {
     console.log(req.body);
