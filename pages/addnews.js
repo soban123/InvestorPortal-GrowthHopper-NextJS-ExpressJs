@@ -96,7 +96,8 @@ export default function addnews() {
                           className='form-control'
                           value={text}
                           onChange={(e)=>setText(e.target.value)}
-                        />
+                        >
+                         </textarea> 
                         
                       </div>
                     </div>
