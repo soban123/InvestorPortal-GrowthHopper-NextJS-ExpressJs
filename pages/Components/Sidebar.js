@@ -48,7 +48,7 @@ export default function Sidebar() {
               <li>
                 <Link href='/reports'>
                   <a>
-                    <i className='fa fa-home'></i>  REPORTS{' '}
+                    <i className='fa fa-home'></i> REPORTS{' '}
                   </a>
                 </Link>
               </li>
@@ -63,53 +63,48 @@ export default function Sidebar() {
           </div>
         ) : (
           <div className='menu_section'>
-          <h3>General</h3>
-          <ul className='nav side-menu'>
-            <li>
-              <Link href='/userpanel'>
-                <a>
-                  <i className='fa fa-home'></i> Home{' '}
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/usernews'>
-                <a>
-                  <i className='fa fa-home'></i> News{' '}
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/userreports'>
-                <a>
-                  <i className='fa fa-home'></i> Reports{' '}
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='http://localhost/website'>
-                <a>
+            <h3>General</h3>
+            <ul className='nav side-menu'>
+              <li>
+                <Link href='/userpanel'>
+                  <a>
+                    <i className='fa fa-home'></i> Home{' '}
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href='/usernews'>
+                  <a>
+                    <i className='fa fa-home'></i> News{' '}
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href='/userreports'>
+                  <a>
+                    <i className='fa fa-home'></i> Reports{' '}
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <a target='_blank' href='http://support.growthhopper.com'>
                   <i className='fa fa-home'></i> Complaints{' '}
                 </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/contractdate'>
-                <a>
-                  <i className='fa fa-home'></i> Contract Date{' '}
+              </li>
+              {/* <li>
+                <Link href='/contractdate'>
+                  <a>
+                    <i className='fa fa-home'></i> Contract Date{' '}
+                  </a>
+                </Link>
+              </li> */}
+              <li>
+                <a href='https://wa.me/03362009368'>
+                  <i className='fa fa-phone'></i> Talk to agent{' '}
                 </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='https://wa.me/03362009368'>
-                <a>
-                  <i className='fa fa-phone'></i> Talk TO Agent{' '}
-                </a>
-              </Link>
-            </li>
-           
-          </ul>
-        </div>
+              </li>
+            </ul>
+          </div>
         )}
       </div>
 

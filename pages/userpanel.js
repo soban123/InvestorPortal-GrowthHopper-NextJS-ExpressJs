@@ -1,6 +1,6 @@
 import Reactc, { useEffect, useState } from 'react';
 import Layout from './LayoutForUser/layout';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import DateRangePicker from './daterangepicker';
 import { start } from 'nprogress';
 
@@ -13,6 +13,26 @@ export default function userpanel() {
   const [starttoendArr, setstarttoendArr] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
+  const [brandNames, setBrandNames] = useState([]);
+  const [startDate, setStartDate] = useState('2020-6-26');
+  const [endDate, setendDate] = useState('2020-12-26');
+  const [pieData, setPieData] = useState({
+    labels: ['Week 1'],
+    datasets: [
+      {
+        backgroundColor: [
+          '#2ecc71',
+          '#3498db',
+          '#95a5a6',
+          '#9b59b6',
+          '#f1c40f',
+          '#e74c3c',
+          '#34495e',
+        ],
+        data: [0],
+      },
+    ],
+  });
   const monthNames = [
     'January',
     'February',
@@ -81,11 +101,11 @@ export default function userpanel() {
       }
     }
 
-    console.log('d1' , dataarr)
+    // console.log('d1', dataarr);
 
     let NumberofDays = arr.indexOf(day) + 1;
-    console.log(NumberofDays) 
-    console.log(arr)
+    // console.log(NumberofDays);
+    // console.log(arr);
     if (NumberofDays > 6) {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
@@ -107,14 +127,14 @@ export default function userpanel() {
 
     arr = [];
     for (let i = 0; i < 7; i++) {
-      if( day - 6 + i < 1 ){
-        arr.push(30 + day - 6 + i )
-      }else{
+      if (day - 6 + i < 1) {
+        arr.push(30 + day - 6 + i);
+      } else {
         arr.push(day - 6 + i);
       }
     }
 
-    console.log(dataarr);
+    // console.log(dataarr);
 
     setData({
       labels: arr,
@@ -169,7 +189,7 @@ export default function userpanel() {
 
   //Last Month Function
   const handleLastMonthGraph = async () => {
-    let month = currentMonth ; 
+    let month = currentMonth;
     let { _id } = userData;
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
@@ -221,17 +241,15 @@ export default function userpanel() {
 
   //This Month Graph Function
   const thismonthgraph = async () => {
-  
     const userDatas = localStorage.getItem('userData');
     let parsedUserData = await JSON.parse(userDatas);
-    let month = currentMonth ; 
+    let month = currentMonth;
     if (parsedUserData) {
-      console.log('currentMonth' , currentMonth )
-      if( parsedUserData.month ){
-         month = parsedUserData.month;
+      // console.log('currentMonth', currentMonth);
+      if (parsedUserData.month) {
+        month = parsedUserData.month;
         setCurrentMonth(parsedUserData.month);
       }
-  
 
       setUserData(parsedUserData);
       //Last Month Data
@@ -251,7 +269,7 @@ export default function userpanel() {
       );
       let Currmonthdata = await apiCall.json();
 
-      console.log(' curr monthly returns' ,Currmonthdata   )
+      // console.log(' curr monthly returns', Currmonthdata);
 
       let arr = [];
       let start = Currmonthdata[0].startDay;
@@ -312,16 +330,101 @@ export default function userpanel() {
           },
         ],
       });
+
+      if (dataarr.length > 7) {
+        let finalData = [];
+        let returnData = [];
+        let brandValues = dataarr.slice(dataarr.length - 6, dataarr.length - 1);
+        var brands = [
+          'Slyde Sports',
+          'Slides',
+          'Toy Universe',
+          'Clobbers',
+          'Klein Watches',
+        ];
+        brandValues.map((num, index) =>
+          finalData.push({ id: num, name: brands[index] })
+        );
+        let brandValuesSorted = brandValues.sort(function (a, b) {
+          return b - a;
+        });
+
+        brandValuesSorted.map((num) => {
+          finalData.map((val) => {
+            if (val.id === num) {
+              returnData.push(val.name);
+            }
+          });
+        });
+        setBrandNames(returnData);
+      }
+      let weeklySum = [];
+      if (dataarr.length > 7) {
+        let iterateNum = parseInt((dataarr.length / 7).toFixed(0));
+        let iterateTill = 0;
+        for (var index = 1; index < iterateNum + 1; index++) {
+          weeklySum.push(
+            dataarr.slice(iterateTill, 7 * index).reduce(function (a, b) {
+              return a + b;
+            }, 0)
+          );
+          iterateTill = 7 * index;
+        }
+
+        if (
+          dataarr.reduce(function (a, b) {
+            return a + b;
+          }) !==
+          weeklySum.reduce(function (a, b) {
+            return a + b;
+          })
+        ) {
+          weeklySum.push(
+            dataarr.slice(iterateTill, dataarr.lenght).reduce(function (a, b) {
+              return a + b;
+            }, 0)
+          );
+        }
+        let weekLabel = [];
+        weeklySum.map((num, index) => {
+          weekLabel.push('Week ' + (index + 1));
+        });
+        setPieData({
+          labels: weekLabel,
+          datasets: [
+            {
+              backgroundColor: [
+                '#2ecc71',
+                '#3498db',
+                '#95a5a6',
+                '#9b59b6',
+                '#f1c40f',
+                '#e74c3c',
+                '#34495e',
+              ],
+              data: weeklySum,
+            },
+          ],
+        });
+        console.log(weeklySum);
+      }
+      function add_months(dt, n) {
+        return new Date(dt.setMonth(dt.getMonth() + n));
+      }
+
+      // setStartDate(`${parsedUserData.date.split('T')[0]}`);
+      let dt = new Date(`${parsedUserData.date.split('T')[0]}`);
+      let lastDate = add_months(dt, 6);
+      let endMonth = lastDate.getMonth();
+      let endDay = lastDate.getDate();
+      let endYear = lastDate.getFullYear();
+
+      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
     }
   };
 
   useEffect(() => {
-   
-
-    
     thismonthgraph();
-
-
   }, []);
 
   const [chartdata, setData] = useState({
@@ -359,7 +462,7 @@ export default function userpanel() {
 
     let endDay = new Date(`${ranges.endDate}`).getDate();
     let endMonth = new Date(`${ranges.endDate}`).getMonth();
-    console.log('startDate', startDay, startMonth, endDay, endMonth);
+    // console.log('startDate', startDay, startMonth, endDay, endMonth);
 
     if (startDay && startMonth && endDay && endMonth) {
       RangeGraph(startDay, startMonth, endDay, endMonth);
@@ -419,14 +522,13 @@ export default function userpanel() {
         );
         let data = await responseRange.json();
 
-        
-          data[0]?.dailyprofit.forEach((element, index) => {
-            if (Number(element) < 0) {
-              dataarr.push(0);
-            } else {
-              dataarr.push(Math.floor(Number(element)));
-            }
-          });
+        data[0]?.dailyprofit.forEach((element, index) => {
+          if (Number(element) < 0) {
+            dataarr.push(0);
+          } else {
+            dataarr.push(Math.floor(Number(element)));
+          }
+        });
 
         for (let i = strday; i <= endday; i++) {
           if (i > 30) {
@@ -588,8 +690,6 @@ export default function userpanel() {
     }
   };
 
-  console.log('month' , currentMonth)
-
   return (
     <Layout>
       {/* <!-- page content --> */}
@@ -656,7 +756,25 @@ export default function userpanel() {
                     data={chartdata}
                     width={100}
                     height={50}
-                    options={{ maintainAspectRatio: false }}
+                    options={{
+                      maintainAspectRatio: false,
+                      scales: {
+                        xAxes: [
+                          {
+                            ticks: {
+                              beginAtZero: true,
+                              callback: function (value, index, values) {
+                                console.log(currentMonth);
+                                var d = new Date();
+                                d.setMonth(currentMonth - 1);
+                                d.setDate(value);
+                                return d.toDateString();
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    }}
                   />
                 </div>
               </div>
@@ -664,11 +782,76 @@ export default function userpanel() {
               <div className='clearfix'></div>
             </div>
           </div>
+          <br />
+          <br />
         </div>
         <br />
+        <div className='row'>
+          <div className='col-md-4 col-sm-4 pb-3'>
+            <div className='x_panel tile'>
+              <div className='x_title'>
+                <h5>Top Earning Brands This Week</h5>
+              </div>
+              <div style={{ height: '277px' }} className='x_content'>
+                <ul className='pl-1'>
+                  {brandNames.length === 0
+                    ? 'Data will be generated after a week'
+                    : brandNames.map((name) => (
+                        <h5>
+                          <img
+                            width='100px'
+                            src={
+                              name === 'Clobbers'
+                                ? 'https://cdn.shopify.com/s/files/1/0304/8289/0811/files/logo3_500x@2x.png?v=1580948324'
+                                : name === 'Slyde Sports'
+                                ? 'https://cdn.shopify.com/s/files/1/0252/4955/files/Logo-slyde.jpg?11408428979176859774'
+                                : name === 'Slides'
+                                ? 'https://cdn.shopify.com/s/files/1/1808/3269/files/slyders-black-logo_180x.png?v=1552653150'
+                                : name == 'Toy Universe'
+                                ? 'https://cdn.shopify.com/s/files/1/1598/2739/t/80/assets/img-logo.svg?v=11199241676725470910'
+                                : name === 'Klein Watches'
+                                ? 'https://cdn.shopify.com/s/files/1/1720/7857/files/logo_d5d80075-9c05-4858-baaf-dd92354e54d5_210x.jpg?v=1517027205'
+                                : ''
+                            }
+                            className='img img-responsive'
+                          />
+                        </h5>
+                      ))}
+                </ul>
+              </div>
+            </div>
+          </div>
 
-      
-       
+          <div className='col-md-4 col-sm-4 pb-3'>
+            <div className='x_panel tile'>
+              <div className='x_title'>
+                <h5>Top Earning Brands This Week</h5>
+              </div>
+              <div style={{ height: '277px' }} className='x_content py-5'>
+                <Pie
+                  data={pieData}
+                  width={500}
+                  options={{ maintainAspectRatio: false }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className='col-md-4 col-sm-4 pb-3'>
+            <div className='x_panel tile'>
+              <div className='x_title'>
+                <h5>Contract Renewal</h5>
+              </div>
+              <div style={{ height: '277px' }} className='x_content'>
+                <h5>Start Date: {startDate}</h5>
+                <h5>End Date: {endDate}</h5>
+                <hr />
+                For renewal talk to agent.{' '}
+                <a href='https://wa.me/03362009368'>Click here</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {/* <!-- /page content --> */}
     </Layout>

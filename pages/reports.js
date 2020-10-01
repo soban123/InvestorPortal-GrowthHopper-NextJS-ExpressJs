@@ -1,83 +1,65 @@
-import React , {useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import Layout from './LayoutAdmin/layout';
 
-
 export default function reports() {
+  const [reports, setReports] = useState([]);
+  const [file, setfile] = useState({});
 
-    const [reports , setReports ] = useState([])
-    const [file , setfile] = useState({})
+  const [updateReports, setUpdateReports] = useState({ title: '' });
 
-    const [ updateReports , setUpdateReports ] = useState({title : '' })
+  useEffect(() => {
+    fetch('/reports/get')
+      .then((res) => res.json())
+      .then((data) => setReports(data));
+  }, []);
 
-    useEffect(() => {
-        
-        fetch('/reports/get')
-        .then(res => res.json())
-        .then( data => setReports(data) )
-      
-    }, [])
+  const handleDelete = (id) => {
+    fetch('/reports/delete/' + id, {
+      method: 'delete',
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        window.location.reload();
+      });
+  };
 
-    const handleDelete = ( id ) =>{
-        fetch('/reports/delete/'+id , {
-            method: 'delete',
-          }).then(function(response) {
-            return response.json();
-          }).then(function(data) {
-            console.log(data)
-            window.location.reload()
-          });
-    }
+  const handleEdit = (id) => {
+    fetch('/reports/' + id)
+      .then((res) => res.json())
+      .then((data) => {
+        setUpdateReports(data);
+        console.log(data);
+      });
+  };
 
-    const handleEdit = (id) =>{
+  const handleSubmit = () => {
+    const formData = new FormData();
+    formData.append('title', updateReports.title);
+    formData.append('file', file);
 
-        fetch( '/reports/'+id )
-        .then( res => res.json() )
-        .then( data => {setUpdateReports(data) ; console.log(data) } )
-    }
+    fetch('/reports/update/' + updateReports._id, {
+      method: 'put',
 
-    const handleSubmit = ( ) =>{
-
-      const formData = new FormData();
-      formData.append('title', updateReports.title);
-      formData.append('file', file);
-
-        fetch('/reports/update/'+updateReports._id , {
-            method: 'put',
-          
-            body: formData
-          }).then(function(response) {
-            return response.json();
-          }).then(function(data) {
-            console.log(data)
-            window.location.reload()
-          });
-        
-
-    }
-    return (
-        <Layout >
-            <div className='right_col' role='main'>
+      body: formData,
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        window.location.reload();
+      });
+  };
+  return (
+    <Layout>
+      <div className='right_col' role='main'>
         <div className=''>
           <div className='page-title'>
             <div className='title_left'>
               <h3>Admin Reports</h3>
-            </div>
-
-            <div className='title_right'>
-              <div className='col-md-5 col-sm-5 form-group pull-right top_search'>
-                <div className='input-group'>
-                  <input
-                    type='text'
-                    className='form-control'
-                    placeholder='Search for...'
-                  />
-                  <span className='input-group-btn'>
-                    <button className='btn btn-secondary' type='button'>
-                      
-                    </button>
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -96,42 +78,43 @@ export default function reports() {
                   className='x_content'
                 >
                   {/* <!-- start project list --> */}
-                 
+
                   {reports.map((reports, index) => {
-                        return (
-                  <div class="card">
-                      <div className="card-header" >
-                       <h2  style={{display: "inline"}} >{reports.title}</h2>
-                       
-                       <div style={{float: 'right'}}>
-                              <button
-                                data-toggle='modal'
-                                data-target='.bs-example-modal-lg'
-                                className='btn btn-info btn-sm'
-                                onClick={() => {
-                                handleEdit(reports._id)
-                                }}
-                              >
-                                <i className='fa fa-pencil'></i> Edit
-                              </button>
-                              <button
-                                className='btn btn-danger btn-sm'
-                                onClick={() => {
-                                handleDelete(reports._id)
-                                }}
-                              >
-                                <i className='fa fa-pencil'></i> Delete
-                              </button>
-                     </div>
-                     </div>
-                    <div class="card-body">
-                        <p class="card-text">{reports.text}</p>
-                        <a href={'/'+reports.url} class="btn btn-primary">Download</a>
-                        
-                    </div>
-                   
-                  </div>
-                        ) } ) }
+                    return (
+                      <div class='card'>
+                        <div className='card-header'>
+                          <h2 style={{ display: 'inline' }}>{reports.title}</h2>
+
+                          <div style={{ float: 'right' }}>
+                            <button
+                              data-toggle='modal'
+                              data-target='.bs-example-modal-lg'
+                              className='btn btn-info btn-sm'
+                              onClick={() => {
+                                handleEdit(reports._id);
+                              }}
+                            >
+                              <i className='fa fa-pencil'></i> Edit
+                            </button>
+                            <button
+                              className='btn btn-danger btn-sm'
+                              onClick={() => {
+                                handleDelete(reports._id);
+                              }}
+                            >
+                              <i className='fa fa-pencil'></i> Delete
+                            </button>
+                          </div>
+                        </div>
+                        <div class='card-body'>
+                          <p class='card-text'>{reports.text}</p>
+                          <a href={'/' + reports.url} class='btn btn-primary'>
+                            Download
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
 
                   {/* <!-- end project list --> */}
                 </div>
@@ -163,14 +146,12 @@ export default function reports() {
                 data-parsley-validate
                 className='form-horizontal form-label-left'
               >
-               
-                
                 <div className='item form-group'>
                   <label
                     for='middle-name'
                     className='col-form-label col-md-3 col-sm-3 label-align'
                   >
-                   Title
+                    Title
                   </label>
                   <div className='col-md-6 col-sm-6'>
                     <input
@@ -178,9 +159,13 @@ export default function reports() {
                       className='form-control'
                       type='text'
                       name='middle-name'
-                      value = { updateReports.title }
-                     
-                      onChange={(e) => setUpdateReports({...updateReports , title : e.target.value})  }
+                      value={updateReports.title}
+                      onChange={(e) =>
+                        setUpdateReports({
+                          ...updateReports,
+                          title: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -189,19 +174,21 @@ export default function reports() {
                     for='middle-name'
                     className='col-form-label col-md-3 col-sm-3 label-align'
                   >
-                   Select Report
+                    Select Report
                   </label>
-                  <div class="custom-file">
-                        <input 
-                        type="file" 
-                        className="custom-file-input" 
-                        id="inputGroupFile01"
-                        onChange={(e)=> setfile(e.target.files[0]) }
-                        />
-                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                    </div>
+                  <div class='custom-file'>
+                    <input
+                      type='file'
+                      className='custom-file-input'
+                      id='inputGroupFile01'
+                      onChange={(e) => setfile(e.target.files[0])}
+                    />
+                    <label class='custom-file-label' for='inputGroupFile01'>
+                      Choose file
+                    </label>
+                  </div>
                 </div>
-              
+
                 <div className='ln_solid'></div>
               </form>
             </div>
@@ -221,12 +208,10 @@ export default function reports() {
               >
                 Save Changes
               </button>
-             
             </div>
           </div>
         </div>
       </div>
-     
-        </Layout>
-    )
+    </Layout>
+  );
 }

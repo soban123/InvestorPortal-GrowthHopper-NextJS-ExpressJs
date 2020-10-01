@@ -34,6 +34,11 @@ export default class Mydoc extends Document {
           <link href='build/css/custom.min.css' rel='stylesheet' />
 
           <link
+            href='https://cdn.quilljs.com/1.3.6/quill.snow.css'
+            rel='stylesheet'
+          />
+
+          <link
             rel='stylesheet'
             href='//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'
           />
@@ -83,6 +88,7 @@ export default class Mydoc extends Document {
           <script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
           <script src='//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'></script>
           <script src='//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'></script>
+          <script src='https://cdn.quilljs.com/1.3.6/quill.js'></script>
 
           {/* <!-- Custom Theme Scripts --> */}
           <script src={'./build/js/custom.min.js'}></script>

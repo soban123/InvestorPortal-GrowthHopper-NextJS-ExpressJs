@@ -21,7 +21,6 @@ mongoose.connect(MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // CREATE ADMIN USER
 User.find({ email: 'admin@growthhopper.com' }).then((doc) => {
-  console.log(doc);
   if (doc.length === 0) {
     const data = {
       name: 'Admin',
@@ -50,25 +49,26 @@ User.find({ email: 'admin@growthhopper.com' }).then((doc) => {
     });
   }
 });
-investorsmonthlyreturns.find({ email: 'hasan@gmail.com' }).then((doc) => {
-  var total = 0;
-  doc.map((mr) => {
-    total = total + mr.revenue;
-  });
-  console.log('MONTHLY TOTAL: ', total);
-});
-investorsdailyreturns.find({ email: 'hasan@gmail.com' }).then((doc) => {
-  var subtotal = 0;
-  doc.map((dr) => {
-    var totalone = 0;
-    dr.dailyprofit.map((profit) => {
-      totalone = totalone + profit;
-    });
-    subtotal = subtotal + totalone;
-    console.log(dr.month, totalone);
-  });
-  console.log('MONTHLY TOTAL CAL: ', subtotal);
-});
+// investorsmonthlyreturns.find({ email: 'hasan@gmail.com' }).then((doc) => {
+//   var total = 0;
+//   doc.map((mr) => {
+//     total = total + mr.revenue;
+//   });
+//   console.log('MONTHLY TOTAL: ', total);
+// });
+
+// investorsdailyreturns.find({ email: 'hasan@gmail.com' }).then((doc) => {
+//   var subtotal = 0;
+//   doc.map((dr) => {
+//     var totalone = 0;
+//     dr.dailyprofit.map((profit) => {
+//       totalone = totalone + profit;
+//     });
+//     subtotal = subtotal + totalone;
+//     console.log(dr.month, totalone);
+//   });
+//   console.log('MONTHLY TOTAL CAL: ', subtotal);
+// });
 
 //Auth function
 
@@ -88,8 +88,77 @@ function authenticateToken(req, res, next) {
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-  const user = await User.find();
-  res.send(user);
+  // const user = await User.find();
+  // res.send(user);
+
+  var amount = 1500000;
+  var assignedDate = new Date();
+
+  var monthsReturns = [];
+
+  var startDate = new Date(assignedDate);
+  var endDate = new Date(assignedDate);
+  endDate.setMonth(startDate.getMonth() + 6);
+  var dailyReturns = [];
+
+  var sampleArray = Array(30).fill(0);
+
+  var nowMonth =
+    startDate.toDateString().split(' ')[1] +
+    ' ' +
+    startDate.toDateString().split(' ')[3];
+  var nowArray = [];
+
+  for (
+    var index = new Date(startDate);
+    index.toDateString() !== endDate.toDateString();
+    index.setDate(index.getDate() + 1)
+  ) {
+    if (nowArray.length === 0) {
+      nowArray = sampleArray;
+    }
+    nowArray[index.getDate() - 1] = 1;
+
+    if (
+      index.toDateString().split(' ')[1] +
+        ' ' +
+        index.toDateString().split(' ')[3] !==
+      nowMonth
+    ) {
+      console.log(nowArray);
+      dailyReturns.push(nowArray);
+      nowArray = [];
+      nowMonth =
+        index.toDateString().split(' ')[1] +
+        ' ' +
+        index.toDateString().split(' ')[3];
+    }
+  }
+
+  // while (startDate.toDateString() !== endDate.toDateString()) {
+  //   if (nowArray.length === 0) {
+  //     nowArray = sampleArray;
+  //   }
+  //   nowArray[startDate.getDate() - 1] = 1;
+  //   startDate.setDate(startDate.getDate() + 1);
+
+  //   if (
+  //     startDate.toDateString().split(' ')[1] +
+  //       ' ' +
+  //       startDate.toDateString().split(' ')[3] !==
+  //     nowMonth
+  //   ) {
+  //     dailyReturns.push(nowArray);
+  //     console.log(nowMonth);
+  //     nowArray = [];
+  //     nowMonth =
+  //       startDate.toDateString().split(' ')[1] +
+  //       ' ' +
+  //       startDate.toDateString().split(' ')[3];
+  //   }
+  // }
+
+  res.json({ amount, monthsReturns, dailyReturns });
 });
 
 router.get('/:id', async function (req, res, next) {
@@ -98,7 +167,7 @@ router.get('/:id', async function (req, res, next) {
   res.send(user);
 });
 
-router.post('/',async function (req, res, next) {
+router.post('/', async function (req, res, next) {
   console.log(req.body);
   const {
     name,
@@ -109,11 +178,11 @@ router.post('/',async function (req, res, next) {
     package,
   } = req.body;
 
-   bcrypt.hash(password, saltRounds, async function (err, hash) {
+  bcrypt.hash(password, saltRounds, async function (err, hash) {
     // console.log(hash);
 
     const month = new Date().getMonth();
-    const newuser =  new User({
+    const newuser = new User({
       name,
       email,
       password: hash,
@@ -122,54 +191,59 @@ router.post('/',async function (req, res, next) {
       package,
       month,
     });
-   
-      let postUser = await newuser.save() ; 
-      console.log('postUser' , postUser) ; 
 
+    let postUser = await newuser.save();
+    console.log('postUser', postUser);
 
-    
-  const openDay = new Date().getDate();
+    const openDay = new Date().getDate();
 
-  var arr = [];
-  while (arr.length < 6) {
-    var r = Math.floor(Math.random() * 6);
-    if (arr.indexOf(r) === -1) arr.push(r);
-  }
+    var arr = [];
+    while (arr.length < 6) {
+      var r = Math.floor(Math.random() * 6);
+      if (arr.indexOf(r) === -1) arr.push(r);
+    }
 
-  let calPackageperc = package.split('')[0];
+    let calPackageperc = package.split('')[0];
 
-  for (let i = 0; i < 6; i++) {
-    var revenue = (amount * (calPackageperc + arr[i])) / 1000;
-    var packageprecent = (calPackageperc + arr[i]) / 10;
+    for (let i = 0; i < 6; i++) {
+      var revenue = (amount * (calPackageperc + arr[i])) / 1000;
+      var packageprecent = (calPackageperc + arr[i]) / 10;
 
-    const monthlyreturns = new investorsmonthlyreturns({
-      email,
-      userId : postUser._id , 
-      package,
-      amount,
-      packageprecent,
-      revenue,
-      startDay: openDay,
-      endDay: openDay,
-      month: Number(month) + i > 11 ? month + i - 12 : Number(month) + i,
-    });
+      const monthlyreturns = new investorsmonthlyreturns({
+        email,
+        userId: postUser._id,
+        package,
+        amount,
+        packageprecent,
+        revenue,
+        startDay: openDay,
+        endDay: openDay,
+        month: Number(month) + i > 11 ? month + i - 12 : Number(month) + i,
+      });
 
-    monthlyreturns
-      .save()
-      .then((result) => {
-        console.log(result);
-        res.json(result);
-      })
-      .catch((err) => res.json(err));
+      monthlyreturns
+        .save()
+        .then((result) => {
+          console.log(result);
+          res.json(result);
+        })
+        .catch((err) => res.json(err));
 
-    //Daily
+      //Daily
 
-    let arrofdailyprofit = [];
+      let arrofdailyprofit = [];
 
-    for (let t = 0; t < 31; t++) {
-      if (i == 0) {
-        if (t == 0) {
-          arrofdailyprofit.push(0);
+      for (let t = 0; t < 31; t++) {
+        if (i == 0) {
+          if (t == 0) {
+            arrofdailyprofit.push(0);
+          } else {
+            var returns =
+              t % 2 == 0
+                ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+                : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+            arrofdailyprofit.push(returns);
+          }
         } else {
           var returns =
             t % 2 == 0
@@ -177,46 +251,34 @@ router.post('/',async function (req, res, next) {
               : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
           arrofdailyprofit.push(returns);
         }
-      } else {
-        var returns =
-          t % 2 == 0
-            ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
-            : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
-        arrofdailyprofit.push(returns);
       }
+
+      arrofdailyprofit.pop();
+      var totaldr = 0;
+      arrofdailyprofit.map((dr) => {
+        totaldr = totaldr + dr;
+      });
+      var disc = revenue - totaldr;
+      arrofdailyprofit.push(disc);
+
+      const dailyreturns = new investorsdailyreturns({
+        email,
+        userId: postUser._id,
+        month: Number(month) + i > 11 ? month + i - 12 : Number(month) + i,
+        dailyprofit: arrofdailyprofit,
+      });
+
+      dailyreturns
+        .save()
+
+        .then((result) => {
+          console.log(result);
+          res.json(result);
+        })
+
+        .catch((err) => res.json({ err }));
     }
-
-    arrofdailyprofit.pop();
-    var totaldr = 0;
-    arrofdailyprofit.map((dr) => {
-      totaldr = totaldr + dr;
-    });
-    var disc = revenue - totaldr;
-    arrofdailyprofit.push(disc);
-    
-    const dailyreturns = new investorsdailyreturns({
-      email,
-      userId : postUser._id ,
-      month: Number(month) + i > 11 ? month + i - 12 : Number(month) + i,
-      dailyprofit: arrofdailyprofit,
-    });
-
-    dailyreturns
-      .save()
-
-      .then((result) => {
-        console.log(result)
-        res.json(result);
-      })
-
-      .catch((err) => res.json({ err }));
-  }
-    
-    
   });
-
-
-  
 });
 
 router.put('/update/:id', authenticateToken, function (req, res) {
@@ -235,10 +297,6 @@ router.put('/update/:id', authenticateToken, function (req, res) {
   User.findByIdAndUpdate(id, updatedUser).then((result) =>
     res.json('User has been updated')
   );
-
-
-  
-
 
   // bcrypt.hash(password, saltRounds, function (err, hash) {
 
@@ -309,16 +367,17 @@ router.post('/login', async function (req, res, next) {
   }
 });
 
-
-
 router.get('/investorsdailyreturns/:id/:month', async function (
   req,
   res,
   next
 ) {
-  const { id , month } = req.params;
+  const { id, month } = req.params;
 
-  const dailyreturns = await investorsdailyreturns.find({ month, userId : `${id}` });
+  const dailyreturns = await investorsdailyreturns.find({
+    month,
+    userId: `${id}`,
+  });
   res.send(dailyreturns);
 });
 
@@ -327,16 +386,21 @@ router.get('/investorsmonthlyreturns/:id/:month', async function (
   res,
   next
 ) {
-  const { id ,  month } = req.params;
+  const { id, month } = req.params;
 
-  const monthlyreturns = await investorsmonthlyreturns.find({ userId : `${id}`, month });
+  const monthlyreturns = await investorsmonthlyreturns.find({
+    userId: `${id}`,
+    month,
+  });
   res.send(monthlyreturns);
 });
 
 router.get('/investorsmonthlyreturns/:id', async function (req, res, next) {
   const { id, month } = req.params;
 
-  const monthlyreturns = await investorsmonthlyreturns.find({ userId : `${id}` });
+  const monthlyreturns = await investorsmonthlyreturns.find({
+    userId: `${id}`,
+  });
   res.send(monthlyreturns);
 });
 

@@ -1,37 +1,43 @@
-import React , {useState , useEffect} from 'react'
-import Layout from './LayoutAdmin/layout'
+import React, { useState, useEffect } from 'react';
+import Layout from './LayoutAdmin/layout';
 
 export default function addnews() {
+  const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
 
-    const [title , setTitle] = useState('')
-    const [text , setText] = useState('')
-
-
-    const handleAddNews = (e) => {
-        e.preventDefault()
-
-        const news = {
-            title , 
-            text
-        }
-        fetch('/news' , {
-            method: 'post',
-            body: JSON.stringify(news),  
-            headers: {
-                'Accept' : 'application/json',
-                'Content-Type': 'application/json',
-              },
-          }).then(function(response) {
-            return response.json();
-          }).then(function(data) {
-            console.log(data)
-          });
-        
-    }
-    return (
-        <Layout >
-
-<div className='right_col mh-100' role='main'>
+  useEffect(() => {
+    var quill = new Quill('#editor', {
+      theme: 'snow',
+    });
+    quill.on('text-change', function (delta, oldDelta, source) {
+      setText(quill.root.innerHTML);
+    });
+  }, []);
+  const handleAddNews = (e) => {
+    e.preventDefault();
+    setText(document.querySelector('.ql-editor').innerHTML);
+    const news = {
+      title,
+      text,
+    };
+    fetch('/news', {
+      method: 'post',
+      body: JSON.stringify(news),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      });
+  };
+  return (
+    <Layout>
+      <div className='right_col mh-100' role='main'>
         <div className=''>
           <div className='page-title'>
             <div className='title_left'>
@@ -43,7 +49,6 @@ export default function addnews() {
             <div className='col-md-12 col-sm-12'>
               <div className='x_panel'>
                 <div className='x_title'>
-
                   <div className='clearfix'></div>
                 </div>
                 <div className='x_content'>
@@ -67,7 +72,7 @@ export default function addnews() {
                           required='required'
                           className='form-control'
                           value={title}
-                          onChange={(e)=>setTitle(e.target.value)}
+                          onChange={(e) => setTitle(e.target.value)}
                         />
                       </div>
                     </div>
@@ -79,23 +84,29 @@ export default function addnews() {
                         Text <span className='required'>*</span>
                       </label>
                       <div className='col-md-6 col-sm-6'>
-                        <textarea 
+                        {/* <textarea
                           type='text'
                           id='first-name'
                           required='required'
                           className='form-control'
                           value={text}
                           onChange={(e)=>setText(e.target.value)}
-                        />
+                        /> */}
+                        <div id='editor'></div>
                       </div>
                     </div>
-                    
 
                     <div className='item form-group'>
                       <div className='col-md-6 col-sm-6 offset-md-3'>
-                      <button onClick={handleAddNews} className="btn btn-secondary" > Add News  </button>
+                        <button
+                          onClick={handleAddNews}
+                          className='btn btn-secondary'
+                        >
+                          {' '}
+                          Add News{' '}
+                        </button>
                       </div>
-                    </div>  
+                    </div>
                   </form>
                 </div>
               </div>
@@ -104,7 +115,6 @@ export default function addnews() {
         </div>
       </div>
       {/* <!-- page content --> */}
-        
-        </Layout>
-    )
+    </Layout>
+  );
 }
