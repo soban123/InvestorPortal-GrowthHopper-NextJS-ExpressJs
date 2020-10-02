@@ -26,6 +26,7 @@ export default class Mydoc extends Document {
 
           <link href='starrr/dist/starrr.css' rel='stylesheet' />
 
+          <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
           <link
             href='bootstrap-daterangepicker/daterangepicker.css'
             rel='stylesheet'
@@ -92,6 +93,10 @@ export default class Mydoc extends Document {
 
           {/* <!-- Custom Theme Scripts --> */}
           <script src={'./build/js/custom.min.js'}></script>
+
+          <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+          <script src={'/static/custom.js'}></script>
         </body>
         <style global jsx>
           {`

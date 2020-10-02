@@ -183,6 +183,7 @@ export default function news() {
                   >
                     Text
                   </label>
+
                   <div className='col-md-6 col-sm-6'>
                     {/* <textarea
                       className='form-control'
