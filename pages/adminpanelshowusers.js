@@ -48,7 +48,15 @@ function adminpanelshowusers(props) {
   };
 
   useEffect(() => {
-    fetch('/user')
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const tokens = `Bearer ${gettokenfromLocalstorage}`;
+
+    fetch('/user' , {
+      method: 'get',
+      headers: {
+        Authorization: tokens,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
@@ -97,7 +105,7 @@ function adminpanelshowusers(props) {
   };
 
   const handleView = (id) => {
-    fetch('/user/' + id)
+    fetch('/user/' + id , )
       .then((res) => res.json())
       .then((data) => {
         setUserData({

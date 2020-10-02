@@ -7,16 +7,28 @@ export default function addnews() {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
+  const router = useRouter()
+
+
   useEffect(() => {
-    var quill = new Quill('#editor', {
-      theme: 'snow',
-    });
-    quill.on('text-change', function (delta, oldDelta, source) {
-      setText(quill.root.innerHTML);
-    });
+    
+   
+    if(window.Quill){
+
+      var quill = new Quill('#editor', {
+        theme: 'snow',
+      });
+      quill.on('text-change', function (delta, oldDelta, source) {
+        setText(quill.root.innerHTML);
+      });
+      
+    }
+    
   }, []);
   const handleAddNews = (e) => {
     e.preventDefault();
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
     setText(document.querySelector('.ql-editor').innerHTML);
     const news = {
       title,
@@ -26,8 +38,9 @@ export default function addnews() {
       method: 'post',
       body: JSON.stringify(news),
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
+        Authorization: token,
       },
     })
       .then(function (response) {
@@ -35,6 +48,7 @@ export default function addnews() {
       })
       .then(function (data) {
         console.log(data);
+        router.push('/news')
       });
   };
   return (

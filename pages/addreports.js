@@ -11,9 +11,10 @@ export default function addreports() {
     const [file , setfile] = useState({})
 
 
-    const handleAddReports = (e) => {
+        const handleAddReports = (e) => {
         e.preventDefault()
-
+        const gettokenfromLocalstorage = localStorage.getItem('token');
+        const token = `Bearer ${gettokenfromLocalstorage}`;
        
         const formData = new FormData();
         formData.append('title', title);
@@ -21,7 +22,9 @@ export default function addreports() {
         fetch('/reports' , {
             method: 'post',
             body: formData,  
-           
+            headers: {
+              Authorization: token,
+            },
           }).then(function(response) {
             return response.json();
           }).then(function(data) {

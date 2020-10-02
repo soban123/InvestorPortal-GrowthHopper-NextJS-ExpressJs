@@ -6,7 +6,21 @@ const { MongoUrl } = require('../Config/keys');
 
 const News = require('../models/news');
 
+var jwt = require('jsonwebtoken');
 
+function authenticateToken(req, res, next) {
+  // Gather the jwt access token from the request header
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401); // if there isn't any token
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    console.log(err);
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next(); // pass the execution off to whatever request the client intended
+  });
+}
 
 mongoose.connect(MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -16,21 +30,21 @@ router.get('/get', async function (req, res, next) {
   res.send(news);
   });
 
-  router.get('/:id', async function (req, res, next) {
+  router.get('/:id' , async function (req, res, next) {
       const {id} = req.params ; 
       console.log(req.params)
     const news = await News.findById({_id:id});
   res.send(news);
   });
 
-  router.delete('/delete/:id', async function (req, res, next) {
+  router.delete('/delete/:id', authenticateToken  , async function (req, res, next) {
     const {id} = req.params ; 
     console.log(req.params)
   const news = await News.findByIdAndDelete({_id:id});
 res.send(news);
 });
 
-  router.put('/update/:id', async function (req, res, next) {
+  router.put('/update/:id', authenticateToken ,  async function (req, res, next) {
     const {id} = req.params ; 
     const {title , text} = req.body ; 
     console.log(req.params)
@@ -43,7 +57,7 @@ res.send(news);
   );
 });
 
-router.post('/', async  function (req, res, next) {
+router.post('/', authenticateToken  , async  function (req, res, next) {
     const {title , text} = req.body ; 
     console.log(req.body)
 

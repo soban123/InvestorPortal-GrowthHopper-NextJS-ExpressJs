@@ -14,8 +14,15 @@ export default function reports() {
   }, []);
 
   const handleDelete = (id) => {
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
     fetch('/reports/delete/' + id, {
       method: 'delete',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
     })
       .then(function (response) {
         return response.json();
@@ -36,13 +43,17 @@ export default function reports() {
   };
 
   const handleSubmit = () => {
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
     const formData = new FormData();
     formData.append('title', updateReports.title);
     formData.append('file', file);
 
     fetch('/reports/update/' + updateReports._id, {
       method: 'put',
-
+      headers: {
+        Authorization: token,
+      },
       body: formData,
     })
       .then(function (response) {

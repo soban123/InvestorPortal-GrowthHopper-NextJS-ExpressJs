@@ -87,7 +87,7 @@ function authenticateToken(req, res, next) {
 }
 
 /* GET users listing. */
-router.get('/', async function (req, res, next) {
+router.get('/', authenticateToken , async function (req, res, next) {
   const user = await User.find();
   res.send(user);
 
@@ -369,7 +369,7 @@ router.post('/login', async function (req, res, next) {
   }
 });
 
-router.get('/investorsdailyreturns/:id/:month', async function (
+router.get('/investorsdailyreturns/:id/:month'  ,  async function (
   req,
   res,
   next
@@ -383,7 +383,7 @@ router.get('/investorsdailyreturns/:id/:month', async function (
   res.send(dailyreturns);
 });
 
-router.get('/investorsmonthlyreturns/:id/:month', async function (
+router.get('/investorsmonthlyreturns/:id/:month' ,  async function (
   req,
   res,
   next
@@ -397,7 +397,7 @@ router.get('/investorsmonthlyreturns/:id/:month', async function (
   res.send(monthlyreturns);
 });
 
-router.get('/investorsmonthlyreturns/:id', async function (req, res, next) {
+router.get('/investorsmonthlyreturns/:id' ,  async function (req, res, next) {
   const { id, month } = req.params;
 
   const monthlyreturns = await investorsmonthlyreturns.find({

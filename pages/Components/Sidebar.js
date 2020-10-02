@@ -20,14 +20,14 @@ export default function Sidebar() {
               <li>
                 <Link href='/adminpanelshowusers'>
                   <a>
-                    <i className='fa fa-home'></i> Home{' '}
+                    <i className='fa fa-home'></i> HOME{' '}
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href='/adminpanel'>
                   <a>
-                    <i className='fa fa-home'></i> Add Investor{' '}
+                    <i className='fa fa-home'></i> ADD INVESTORS{' '}
                   </a>
                 </Link>
               </li>
@@ -68,27 +68,27 @@ export default function Sidebar() {
               <li>
                 <Link href='/userpanel'>
                   <a>
-                    <i className='fa fa-home'></i> Home{' '}
+                    <i className='fa fa-home'></i> HOME{' '}
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href='/usernews'>
                   <a>
-                    <i className='fa fa-home'></i> News{' '}
+                    <i className='fa fa-home'></i> NEWS{' '}
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href='/userreports'>
                   <a>
-                    <i className='fa fa-home'></i> Reports{' '}
+                    <i className='fa fa-home'></i> REPORTS{' '}
                   </a>
                 </Link>
               </li>
               <li>
                 <a target='_blank' href='http://support.growthhopper.com'>
-                  <i className='fa fa-home'></i> Complaints{' '}
+                  <i className='fa fa-home'></i> COMPLAINTS{' '}
                 </a>
               </li>
               {/* <li>
@@ -100,7 +100,7 @@ export default function Sidebar() {
               </li> */}
               <li>
                 <a href='https://wa.me/03362009368'>
-                  <i className='fa fa-phone'></i> Talk to agent{' '}
+                  <i className='fa fa-phone'></i> TALK AGENT{' '}
                 </a>
               </li>
             </ul>

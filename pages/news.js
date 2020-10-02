@@ -8,25 +8,39 @@ export default function news() {
   const [updateNews, setUpdateNews] = useState({ title: '', text: '' });
   const [quilVar, setQuilVar] = useState('');
   useEffect(() => {
+
     fetch('/news/get')
       .then((res) => res.json())
       .then((data) => setNews(data));
 
-    var quill = new window.Quill('#editor', {
-      theme: 'snow',
-    });
-    quill.on('text-change', function (delta, oldDelta, source) {
-      setUpdateNews({
-        title: document.getElementById('middle-name').value,
-        text: quill.root.innerHTML,
-      });
-    });
-    setQuilVar(quill);
+      if(window.Quill){
+
+        var quill = new window.Quill('#editor', {
+          theme: 'snow',
+        });
+        quill.on('text-change', function (delta, oldDelta, source) {
+          setUpdateNews({
+            title: document.getElementById('middle-name').value,
+            text: quill.root.innerHTML,
+          });
+        });
+        setQuilVar(quill);
+      }
   }, []);
 
+
+  
+
   const handleDelete = (id) => {
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
     fetch('/news/delete/' + id, {
       method: 'delete',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
     })
       .then(function (response) {
         return response.json();
@@ -38,22 +52,41 @@ export default function news() {
   };
 
   const handleEdit = (id) => {
-    fetch('/news/' + id)
+  
+    
+
+      var quill = new window.Quill('#editor', {
+        theme: 'snow',
+      });
+      quill.on('text-change', function (delta, oldDelta, source) {
+        setUpdateNews({
+           id ,
+          title: document.getElementById('middle-name').value,
+          text: quill.root.innerHTML,
+        });
+      });
+   
+
+    fetch('/news/' + id )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.title);
-        setUpdateNews({ title: data.title, text: data.text });
-        console.log(updateNews);
-        quilVar.clipboard.dangerouslyPasteHTML(data.text);
+        setUpdateNews({ title: data.title, text: data.text , id : data._id });
+        console.log(data)
+        quill.clipboard.dangerouslyPasteHTML(data.text);
       });
   };
 
   const handleSubmit = () => {
-    fetch('/news/update/' + updateNews._id, {
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
+    console.log(updateNews)
+    fetch('/news/update/' + updateNews.id, {
       method: 'put',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: token,
+
       },
       body: JSON.stringify(updateNews),
     })

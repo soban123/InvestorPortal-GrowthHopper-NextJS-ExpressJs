@@ -8,6 +8,23 @@ const Reports = require('../models/reports');
 
 var multer  = require('multer')
 
+var jwt = require('jsonwebtoken');
+
+
+function authenticateToken(req, res, next) {
+  // Gather the jwt access token from the request header
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401); // if there isn't any token
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    console.log(err);
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next(); // pass the execution off to whatever request the client intended
+  });
+}
+
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -40,14 +57,14 @@ router.get('/get', async function (req, res, next) {
   res.send(getreports);
   });
 
-  router.delete('/delete/:id', async function (req, res, next) {
+  router.delete('/delete/:id', authenticateToken   ,  async function (req, res, next) {
     const {id} = req.params ; 
     console.log(req.params)
   const rep = await Reports.findByIdAndDelete({_id:id});
 res.send(rep);
 });
 
-  router.put('/update/:id' , upload.single('file') , async function (req, res, next) {
+  router.put('/update/:id' , authenticateToken ,  upload.single('file') , async function (req, res, next) {
     const {id} = req.params ; 
     const { title } = req.body ; 
     const {path} = req.file
@@ -60,7 +77,7 @@ res.send(rep);
   );
 });
 
-router.post('/', upload.single('file') , async  function (req, res, next) {
+router.post('/', authenticateToken ,  upload.single('file') , async  function (req, res, next) {
     const { title } = req.body ; 
     const {path} = req.file
     const newReport = new Reports({
