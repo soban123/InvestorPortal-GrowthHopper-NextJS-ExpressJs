@@ -88,52 +88,52 @@ function authenticateToken(req, res, next) {
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-  // const user = await User.find();
-  // res.send(user);
+  const user = await User.find();
+  res.send(user);
 
-  var amount = 1500000;
-  var assignedDate = new Date();
+  // var amount = 1500000;
+  // var assignedDate = new Date();
 
-  var monthsReturns = [];
+  // var monthsReturns = [];
 
-  var startDate = new Date(assignedDate);
-  var endDate = new Date(assignedDate);
-  endDate.setMonth(startDate.getMonth() + 6);
-  var dailyReturns = [];
+  // var startDate = new Date(assignedDate);
+  // var endDate = new Date(assignedDate);
+  // endDate.setMonth(startDate.getMonth() + 6);
+  // var dailyReturns = [];
 
-  var sampleArray = Array(30).fill(0);
+  // var sampleArray = Array(30).fill(0);
 
-  var nowMonth =
-    startDate.toDateString().split(' ')[1] +
-    ' ' +
-    startDate.toDateString().split(' ')[3];
-  var nowArray = [];
+  // var nowMonth =
+  //   startDate.toDateString().split(' ')[1] +
+  //   ' ' +
+  //   startDate.toDateString().split(' ')[3];
+  // var nowArray = [];
 
-  for (
-    var index = new Date(startDate);
-    index.toDateString() !== endDate.toDateString();
-    index.setDate(index.getDate() + 1)
-  ) {
-    if (nowArray.length === 0) {
-      nowArray = sampleArray;
-    }
-    nowArray[index.getDate() - 1] = 1;
+  // for (
+  //   var index = new Date(startDate);
+  //   index.toDateString() !== endDate.toDateString();
+  //   index.setDate(index.getDate() + 1)
+  // ) {
+  //   if (nowArray.length === 0) {
+  //     nowArray = sampleArray;
+  //   }
+  //   nowArray[index.getDate() - 1] = 1;
 
-    if (
-      index.toDateString().split(' ')[1] +
-        ' ' +
-        index.toDateString().split(' ')[3] !==
-      nowMonth
-    ) {
-      console.log(nowArray);
-      dailyReturns.push(nowArray);
-      nowArray = [];
-      nowMonth =
-        index.toDateString().split(' ')[1] +
-        ' ' +
-        index.toDateString().split(' ')[3];
-    }
-  }
+  //   if (
+  //     index.toDateString().split(' ')[1] +
+  //       ' ' +
+  //       index.toDateString().split(' ')[3] !==
+  //     nowMonth
+  //   ) {
+  //     console.log(nowArray);
+  //     dailyReturns.push(nowArray);
+  //     nowArray = [];
+  //     nowMonth =
+  //       index.toDateString().split(' ')[1] +
+  //       ' ' +
+  //       index.toDateString().split(' ')[3];
+  //   }
+  // }
 
   // while (startDate.toDateString() !== endDate.toDateString()) {
   //   if (nowArray.length === 0) {
@@ -158,8 +158,10 @@ router.get('/', async function (req, res, next) {
   //   }
   // }
 
-  res.json({ amount, monthsReturns, dailyReturns });
+  // res.json({ amount, monthsReturns, dailyReturns });
 });
+
+
 
 router.get('/:id', async function (req, res, next) {
   const { id } = req.params;
