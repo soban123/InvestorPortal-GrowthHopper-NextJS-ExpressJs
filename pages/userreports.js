@@ -4,8 +4,21 @@ import Layout from './LayoutForUser/layout';
 export default function userreports() {
   const [reports, setReports] = useState([]);
 
+  var token ; 
+  if(typeof window == 'object'){
+
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+     token = `Bearer ${gettokenfromLocalstorage}`;
+  }
+
   useEffect(() => {
-    fetch('/reports/get')
+
+    fetch('/reports/get', {
+      method: 'get',
+      headers: {
+        Authorization: token,
+      }
+    })
       .then((res) => res.json())
       .then((data) => setReports(data));
   }, []);

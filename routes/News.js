@@ -25,12 +25,12 @@ function authenticateToken(req, res, next) {
 mongoose.connect(MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-router.get('/get', async function (req, res, next) {
+router.get('/get',authenticateToken, async function (req, res, next) {
     const news = await News.find();
   res.send(news);
   });
 
-  router.get('/:id' , async function (req, res, next) {
+  router.get('/:id' ,authenticateToken, async function (req, res, next) {
       const {id} = req.params ; 
       console.log(req.params)
     const news = await News.findById({_id:id});

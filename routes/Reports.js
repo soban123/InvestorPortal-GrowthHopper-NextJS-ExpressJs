@@ -50,7 +50,7 @@ router.get('/get', async function (req, res, next) {
   res.send(reports);
   });
 
-  router.get('/:id', async function (req, res, next) {
+  router.get('/:id',authenticateToken, async function (req, res, next) {
       const {id} = req.params ; 
       console.log(req.params)
     const getreports = await Reports.findById({_id:id});

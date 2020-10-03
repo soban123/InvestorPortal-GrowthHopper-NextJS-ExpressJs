@@ -6,15 +6,33 @@ export default function usernews() {
   const [news, setNews] = useState([]);
 
   const [updateNews, setUpdateNews] = useState({ title: '', text: ' ' });
+  var token ; 
+  if(typeof window == 'object'){
+
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+     token = `Bearer ${gettokenfromLocalstorage}`;
+  }
 
   useEffect(() => {
-    fetch('/news/get')
+
+    fetch('/news/get' , {
+      method: 'get',
+      headers: {
+        Authorization: token,
+      }
+    })
       .then((res) => res.json())
       .then((data) => setNews(data));
   }, []);
 
   const handleEdit = (id) => {
-    fetch('/news/' + id)
+
+    fetch('/news/' + id , {
+      method: 'get',
+      headers: {
+        Authorization: token,
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         setUpdateNews(data);

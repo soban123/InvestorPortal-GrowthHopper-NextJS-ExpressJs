@@ -48,6 +48,38 @@ export default function userpanel() {
     'December',
   ];
 
+  useEffect(() => {
+    let userData = JSON.parse(localStorage.getItem('userData'));
+
+    if( userData ){
+
+      function add_months(dt, n) {
+        return new Date(dt.setMonth(dt.getMonth() + n));
+      }
+  
+      setStartDate(`${userData.date.split('T')[0]}`);
+      let dt = new Date(`${userData.date.split('T')[0]}`);
+      let lastDate = add_months(dt, 6);
+      let endMonth = lastDate.getMonth();
+      let endDay = lastDate.getDate();
+      let endYear = lastDate.getFullYear();
+  
+     
+  
+      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
+    
+    }
+
+  
+  }, []);
+
+  var token ; 
+  if(typeof window == 'object'){
+
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+     token = `Bearer ${gettokenfromLocalstorage}`;
+  }
+
   const handleSelect = (e) => {
     if (e.target.value == 'Last Month') {
       handleLastMonthGraph();
@@ -69,7 +101,12 @@ export default function userpanel() {
     let day = currentDay;
     // day = 14;
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + _id + '/' + month
+      '/user/investorsmonthlyreturns/' + _id + '/' + month , {
+        method: 'get',
+        headers: {
+          Authorization: token,
+        }
+      }
     );
     let Currmonthdata = await apiCall.json();
 
@@ -80,7 +117,12 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + _id + '/' + month
+      '/user/investorsdailyreturns/' + _id + '/' + month , {
+        method: 'get',
+        headers: {
+          Authorization: token,
+        }
+      }
     );
     let data = await response.json();
     let sum = 0;
@@ -110,7 +152,12 @@ export default function userpanel() {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
       let resData = await fetch(
-        '/user/investorsdailyreturns/' + _id + '/' + (month - 1)
+        '/user/investorsdailyreturns/' + _id + '/' + (month - 1) , {
+          method: 'get',
+          headers: {
+            Authorization: token,
+          }
+        }
       );
       let lastMonthDays = await resData.json();
       var newLastDays = [];
@@ -155,7 +202,12 @@ export default function userpanel() {
   const Alltimegraph = async () => {
     let { _id } = userData;
     let month = currentMonth;
-    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id);
+    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id , {
+      method: 'get',
+      headers: {
+        Authorization: token,
+      }
+    });
     let allmonthdata = await allmonth.json();
 
     let arr = [];
@@ -194,7 +246,12 @@ export default function userpanel() {
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc
+      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc , {
+        method: 'get',
+        headers: {
+          Authorization: token,
+        }
+      }
     );
     let Currmonthdata = await apiCall.json();
 
@@ -213,7 +270,12 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc
+      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc , {
+        method: 'get',
+        headers: {
+          Authorization: token,
+        }
+      }
     );
     let data = await response.json();
     let sum = 0;
@@ -265,7 +327,12 @@ export default function userpanel() {
       // setLastmonthdata(dataLastmonthly[0]);
 
       let apiCall = await fetch(
-        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month
+        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month , {
+          method: 'get',
+          headers: {
+            Authorization: token,
+          }
+        }
       );
       let Currmonthdata = await apiCall.json();
 
@@ -286,7 +353,12 @@ export default function userpanel() {
       //Daily Data
       let dataarr = [];
       let response = await fetch(
-        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month
+        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month , {
+          method: 'get',
+          headers: {
+            Authorization: token,
+          }
+        }
       );
       let data = await response.json();
       let sum = 0;
@@ -481,7 +553,12 @@ export default function userpanel() {
     let arr2 = [];
     let dataarr = [];
 
-    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id);
+    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id , {
+      method: 'get',
+      headers: {
+        Authorization: token,
+      }
+    });
     let firstmonthdata = await firstmonth.json();
 
     if (firstmonthdata[0].month > strtmnt || firstmonthdata[0].month > endmnt) {
@@ -506,7 +583,12 @@ export default function userpanel() {
       });
     } else {
       let resmonth = await fetch(
-        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt
+        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt , {
+          method: 'get',
+          headers: {
+            Authorization: token,
+          }
+        }
       );
       let monthdata = await resmonth.json();
 
@@ -518,7 +600,12 @@ export default function userpanel() {
         arr = [];
 
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + strtmnt
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt , {
+            method: 'get',
+            headers: {
+              Authorization: token,
+            }
+          }
         );
         let data = await responseRange.json();
 
@@ -556,7 +643,12 @@ export default function userpanel() {
         arr = [];
         arr2 = [];
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + strtmnt
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt , {
+            method: 'get',
+            headers: {
+              Authorization: token,
+            }
+          }
         );
         let resstrtdata = await responseRange.json();
 
@@ -579,7 +671,12 @@ export default function userpanel() {
         }
 
         let resendmnth = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + endmnt
+          '/user/investorsdailyreturns/' + _id + '/' + endmnt , {
+            method: 'get',
+            headers: {
+              Authorization: token,
+            }
+          }
         );
         let resenddata = await resendmnth.json();
 
@@ -614,7 +711,12 @@ export default function userpanel() {
         for (let i = 0; i <= diffinmnth; i++) {
           if (i == 0) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+                method: 'get',
+                headers: {
+                  Authorization: token,
+                }
+              }
             );
             let resstrtdata = await responseRange.json();
 
@@ -635,7 +737,12 @@ export default function userpanel() {
             }
           } else if (i == diffinmnth) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+                method: 'get',
+                headers: {
+                  Authorization: token,
+                }
+              }
             );
             let resstrtdata = await responseRange.json();
 
@@ -656,7 +763,12 @@ export default function userpanel() {
             }
           } else {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i)
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+                method: 'get',
+                headers: {
+                  Authorization: token,
+                }
+              }
             );
             let resstrtdata = await responseRange.json();
 

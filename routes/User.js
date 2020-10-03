@@ -196,7 +196,8 @@ router.post('/', async function (req, res, next) {
 
     let postUser = await newuser.save();
     console.log('postUser', postUser);
-
+      // user Saved
+      
     const openDay = new Date().getDate();
 
     var arr = [];
@@ -206,7 +207,7 @@ router.post('/', async function (req, res, next) {
     }
 
     let calPackageperc = package.split('')[0];
-
+    var extraMonthArray = [];
     for (let i = 0; i < 6; i++) {
       var revenue = (amount * (calPackageperc + arr[i])) / 1000;
       var packageprecent = (calPackageperc + arr[i]) / 10;
@@ -235,33 +236,201 @@ router.post('/', async function (req, res, next) {
 
       let arrofdailyprofit = [];
 
-      for (let t = 0; t < 31; t++) {
-        if (i == 0) {
-          if (t == 0) {
-            arrofdailyprofit.push(0);
-          } else {
-            var returns =
-              t % 2 == 0
-                ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
-                : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
-            arrofdailyprofit.push(returns);
+      // for (let t = 0; t < 31; t++) {
+      //   if (i == 0) {
+      //     if (t == 0) {
+      //       arrofdailyprofit.push(0);
+      //     } else {
+      //       var returns =
+      //         t % 2 == 0
+      //           ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+      //           : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+      //       arrofdailyprofit.push(returns);
+      //     }
+      //   } else {
+      //     var returns =
+      //       t % 2 == 0
+      //         ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+      //         : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+      //     arrofdailyprofit.push(returns);
+      //   }
+      // }
+
+      // arrofdailyprofit.pop();
+      // var totaldr = 0;
+      // arrofdailyprofit.map((dr) => {
+      //   totaldr = totaldr + dr;
+      // });
+      // var disc = revenue - totaldr;
+      // arrofdailyprofit.push(disc);
+
+      function incrementMonth() {
+        var initialMonth = startDate.getMonth();
+        startDate.setMonth(startDate.getMonth() + 1);
+        if (initialMonth !== 11) {
+          while (true) {
+            if (initialMonth + 1 === startDate.getMonth()) {
+              break;
+            } else {
+              startDate.setMonth(startDate.getMonth() - 1);
+            }
           }
+        }
+      }
+      
+      var allMonths = [];
+      var startDate = new Date();
+      var endDate = new Date();
+      endDate.setMonth(endDate.getMonth() + 6);
+      var dateForChange = new Date(startDate);
+      //FIRST MONTH
+      var firstMonthSampleArray = Array(30).fill(0);
+      for (
+        var index = new Date(startDate);
+        index.getMonth() === startDate.getMonth();
+        index.setDate(index.getDate() + 1)
+      ) {
+        if(index.getDate() == new Date().getDate()){
+          firstMonthSampleArray[index.getDate() - 1] = 0
+        }
+        else{
+
+          firstMonthSampleArray[index.getDate() - 1]  = index.getDate() % 2 == 0
+                  ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+                  : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+        }
+        
+        dateForChange.setDate(dateForChange.getDate() + 1);
+      }
+      if (startDate.getMonth() === 1) {
+        firstMonthSampleArray.splice(-2);
+      }
+      allMonths.push(firstMonthSampleArray);
+      //SECOND MONTH
+      incrementMonth();
+      var secondMonthSampleArray = Array(30).fill(0);
+      for (
+        var index = new Date(dateForChange);
+        index.getMonth() === startDate.getMonth();
+        index.setDate(index.getDate() + 1)
+      ) {
+        secondMonthSampleArray[index.getDate() - 1]  = index.getDate() % 2 == 0
+        ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+        : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+        dateForChange.setDate(dateForChange.getDate() + 1);
+      }
+      if (startDate.getMonth() === 1) {
+        secondMonthSampleArray.splice(-2);
+      }
+      allMonths.push(secondMonthSampleArray);
+      
+      //THIRD MONTH
+      incrementMonth();
+      var thirdMonthSampleArray = Array(30).fill(0);
+      for (
+        var index = new Date(dateForChange);
+        index.getMonth() === startDate.getMonth();
+        index.setDate(index.getDate() + 1)
+      ) {
+        thirdMonthSampleArray[index.getDate() - 1] = index.getDate() % 2 == 0
+        ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+        : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+        dateForChange.setDate(dateForChange.getDate() + 1);
+      }
+      if (startDate.getMonth() === 1) {
+        thirdMonthSampleArray.splice(-2);
+      }
+      allMonths.push(thirdMonthSampleArray);
+      
+      //FORTH MONTH
+      incrementMonth();
+      var forthMonthSampleArray = Array(30).fill(0);
+      for (
+        var index = new Date(dateForChange);
+        index.getMonth() === startDate.getMonth();
+        index.setDate(index.getDate() + 1)
+      ) {
+        forthMonthSampleArray[index.getDate() - 1] =  index.getDate() % 2 == 0
+        ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+        : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+        dateForChange.setDate(dateForChange.getDate() + 1);
+      }
+      if (startDate.getMonth === 1) {
+        forthMonthSampleArray.splice(-2);
+      }
+      allMonths.push(forthMonthSampleArray);
+      
+      //FIFTH MONTH
+      incrementMonth();
+      var fifthMonthSampleArray = Array(30).fill(0);
+      for (
+        var index = new Date(dateForChange);
+        index.getMonth() === startDate.getMonth();
+        index.setDate(index.getDate() + 1)
+      ) {
+        fifthMonthSampleArray[index.getDate() - 1] = index.getDate() % 2 == 0
+        ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+        : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+        dateForChange.setDate(dateForChange.getDate() + 1);
+      }
+      if (startDate.getMonth() === 1) {
+        fifthMonthSampleArray.splice(-2);
+      }
+      allMonths.push(fifthMonthSampleArray);
+      
+      //SIXTH MONTH
+      incrementMonth();
+      var sixthMonthSampleArray = Array(30).fill(0);
+      for (
+        var index = new Date(dateForChange);
+        index.getMonth() === startDate.getMonth();
+        index.setDate(index.getDate() + 1)
+      ) {
+        sixthMonthSampleArray[index.getDate() - 1] = index.getDate() % 2 == 0
+        ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+        : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+        dateForChange.setDate(dateForChange.getDate() + 1);
+      }
+      if (startDate.getMonth() === 1) {
+        sixthMonthSampleArray.splice(-2);
+      }
+      allMonths.push(sixthMonthSampleArray);
+      
+      //EXTRA MONTHS
+      var startingMonth = new Date(dateForChange);
+      
+      var newMonthArray = Array(30).fill(0);
+      while (true) {
+        startingMonthInitial = startingMonth.getMonth();
+        if (
+          startingMonth.getDate() === endDate.getDate() &&
+          startingMonth.getMonth() === endDate.getMonth()
+        ) {
+          if (startingMonthInitial === 1) {
+            newMonthArray.splice(-2);
+          }
+          extraMonthArray.push(newMonthArray);
+          break;
         } else {
-          var returns =
-            t % 2 == 0
-              ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
-              : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
-          arrofdailyprofit.push(returns);
+          newMonthArray[startingMonth.getDate() - 1] = startingMonth.getDate() % 2 == 0
+          ? revenue / 30 + Math.floor((Math.random() * revenue) / 100)
+          : revenue / 30 - Math.floor((Math.random() * revenue) / 100);
+          startingMonth.setDate(startingMonth.getDate() + 1);
+        }
+        if (startingMonthInitial + 1 === startingMonth.getMonth()) {
+          if (startingMonthInitial === 1) {
+            newMonthArray.splice(-2);
+          }
+          extraMonthArray.push(newMonthArray);
+          newMonthArray = Array(30).fill(0);
         }
       }
 
-      arrofdailyprofit.pop();
-      var totaldr = 0;
-      arrofdailyprofit.map((dr) => {
-        totaldr = totaldr + dr;
-      });
-      var disc = revenue - totaldr;
-      arrofdailyprofit.push(disc);
+
+
+
+      arrofdailyprofit = [...allMonths[i]]
+
 
       const dailyreturns = new investorsdailyreturns({
         email,
@@ -280,6 +449,25 @@ router.post('/', async function (req, res, next) {
 
         .catch((err) => res.json({ err }));
     }
+    //extra months
+    console.log('extraMonthArray' , extraMonthArray)
+    const dailyret = new investorsdailyreturns({
+      email,
+      userId: postUser._id,
+      month: Number(month) + 6 > 11 ? month +  6 - 12 : Number(month) +  6,
+      dailyprofit: extraMonthArray[0],
+    });
+
+    dailyret
+      .save()
+
+      .then((result) => {
+        console.log(result);
+        res.json(result);
+      })
+
+      .catch((err) => res.json({ err }));
+   
   });
 });
 
@@ -369,7 +557,7 @@ router.post('/login', async function (req, res, next) {
   }
 });
 
-router.get('/investorsdailyreturns/:id/:month'  ,  async function (
+router.get('/investorsdailyreturns/:id/:month'  ,authenticateToken,  async function (
   req,
   res,
   next
@@ -383,7 +571,7 @@ router.get('/investorsdailyreturns/:id/:month'  ,  async function (
   res.send(dailyreturns);
 });
 
-router.get('/investorsmonthlyreturns/:id/:month' ,  async function (
+router.get('/investorsmonthlyreturns/:id/:month' ,authenticateToken,  async function (
   req,
   res,
   next
@@ -397,7 +585,7 @@ router.get('/investorsmonthlyreturns/:id/:month' ,  async function (
   res.send(monthlyreturns);
 });
 
-router.get('/investorsmonthlyreturns/:id' ,  async function (req, res, next) {
+router.get('/investorsmonthlyreturns/:id' , authenticateToken, async function (req, res, next) {
   const { id, month } = req.params;
 
   const monthlyreturns = await investorsmonthlyreturns.find({

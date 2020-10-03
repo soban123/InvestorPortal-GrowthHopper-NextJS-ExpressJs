@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withRouter } from 'next/router';
 import Layout from './LayoutAdmin/layout';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/router'
 
 function adminPanel(props) {
   let [name, setName] = useState('');
@@ -10,6 +11,8 @@ function adminPanel(props) {
   let [amount, setamount] = useState('');
   let [packages, setpackages] = useState('');
   const [CRIShowHide, setCRI] = useState('hide');
+
+  const router = useRouter()
 
   const Toast = Swal.mixin({
     toast: true,
@@ -51,12 +54,13 @@ function adminPanel(props) {
           icon: 'success',
           title: 'Investor Added',
         });
+        router.push('/adminpanelshowusers')
       });
 
 
       fetch(`http://support.growthhopper.com/setuser/${email}/${password}`)
       .then(res => res.json())
-      .then(data => console.log(data))
+        .then(data => console.log(data) )
 
   };
 
