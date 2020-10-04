@@ -320,7 +320,7 @@ export default function userpanel() {
         }
       );
       let Currmonthdata = await apiCall.json();
-
+      console.log(Currmonthdata);
       if (Currmonthdata.length === 0) {
         var labelArray = month === 1 ? Array(28).fill(0) : Array(30).fill(0);
         var arr = labelArray.map((fill, index) => index + 1);
@@ -891,11 +891,11 @@ export default function userpanel() {
                             ticks: {
                               beginAtZero: true,
                               callback: function (value, index, values) {
-                                console.log(currentMonth);
-                                var d = new Date();
-                                d.setMonth(currentMonth - 1);
-                                d.setDate(value + 1);
-                                return d.toDateString();
+                                // console.log(currentMonth);
+                                // var d = new Date();
+                                // d.setMonth(currentMonth);
+                                // d.setDate(value + 1);
+                                return value + '/' + (currentMonth + 1);
                               },
                             },
                           },
