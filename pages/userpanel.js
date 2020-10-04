@@ -51,33 +51,26 @@ export default function userpanel() {
   useEffect(() => {
     let userData = JSON.parse(localStorage.getItem('userData'));
 
-    if( userData ){
-
+    if (userData) {
       function add_months(dt, n) {
         return new Date(dt.setMonth(dt.getMonth() + n));
       }
-  
+
       setStartDate(`${userData.date.split('T')[0]}`);
       let dt = new Date(`${userData.date.split('T')[0]}`);
       let lastDate = add_months(dt, 6);
       let endMonth = lastDate.getMonth();
       let endDay = lastDate.getDate();
       let endYear = lastDate.getFullYear();
-  
-     
-  
-      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
-    
-    }
 
-  
+      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
+    }
   }, []);
 
-  var token ; 
-  if(typeof window == 'object'){
-
+  var token;
+  if (typeof window == 'object') {
     const gettokenfromLocalstorage = localStorage.getItem('token');
-     token = `Bearer ${gettokenfromLocalstorage}`;
+    token = `Bearer ${gettokenfromLocalstorage}`;
   }
 
   const handleSelect = (e) => {
@@ -101,11 +94,12 @@ export default function userpanel() {
     let day = currentDay;
     // day = 14;
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + _id + '/' + month , {
+      '/user/investorsmonthlyreturns/' + _id + '/' + month,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let Currmonthdata = await apiCall.json();
@@ -117,11 +111,12 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + _id + '/' + month , {
+      '/user/investorsdailyreturns/' + _id + '/' + month,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let data = await response.json();
@@ -152,11 +147,12 @@ export default function userpanel() {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
       let resData = await fetch(
-        '/user/investorsdailyreturns/' + _id + '/' + (month - 1) , {
+        '/user/investorsdailyreturns/' + _id + '/' + (month - 1),
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let lastMonthDays = await resData.json();
@@ -202,11 +198,11 @@ export default function userpanel() {
   const Alltimegraph = async () => {
     let { _id } = userData;
     let month = currentMonth;
-    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id , {
+    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id, {
       method: 'get',
       headers: {
         Authorization: token,
-      }
+      },
     });
     let allmonthdata = await allmonth.json();
 
@@ -246,11 +242,12 @@ export default function userpanel() {
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc , {
+      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let Currmonthdata = await apiCall.json();
@@ -270,11 +267,12 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc , {
+      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let data = await response.json();
@@ -307,191 +305,201 @@ export default function userpanel() {
     let parsedUserData = await JSON.parse(userDatas);
     let month = currentMonth;
     if (parsedUserData) {
-      // console.log('currentMonth', currentMonth);
       if (parsedUserData.month) {
         month = parsedUserData.month;
         setCurrentMonth(parsedUserData.month);
       }
-
       setUserData(parsedUserData);
-      //Last Month Data
-      // let responseLastmonth = await fetch(
-      //   '/user/investorsmonthlyreturns/' +
-      //     parsedUserData._id +
-      //     '/' +
-      //     (month - 1)
-      // );
-      // let dataLastmonthly = await responseLastmonth.json();
-
-      // console.log('monthly returns' ,dataLastmonthly   )
-      // setLastmonthdata(dataLastmonthly[0]);
-
       let apiCall = await fetch(
-        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month , {
+        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month,
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let Currmonthdata = await apiCall.json();
 
-      // console.log(' curr monthly returns', Currmonthdata);
-
-      let arr = [];
-      let start = Currmonthdata[0].startDay;
-      let end = Currmonthdata[0].endDay;
-      for (let i = 0; i < 30; i++) {
-        if (start + i > 30) {
-          arr.push(start + i - 30);
-        } else {
-          arr.push(start + i);
-        }
-      }
-      setstarttoendArr(arr);
-
-      //Daily Data
-      let dataarr = [];
-      let response = await fetch(
-        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month , {
-          method: 'get',
-          headers: {
-            Authorization: token,
-          }
-        }
-      );
-      let data = await response.json();
-      let sum = 0;
-
-      data[0]?.dailyprofit.forEach((element) => {
-        if (Number(element) < 0) {
-          dataarr.push(0);
-        } else {
-          dataarr.push(Math.floor(Number(element)));
-          sum += Number(element);
-        }
-      });
-
-      let day = currentDay;
-      // day = 20;
-      let startdate = arr.indexOf(day);
-      dataarr.splice(startdate + 1, dataarr.length);
-      const todayprofit = dataarr.slice(startdate, startdate + 1);
-      if (todayprofit > 0) {
-        setTodayEarning(todayprofit);
-      } else {
-        setTodayEarning(0);
-      }
-
-      const Yesterdayearn = dataarr.slice(startdate - 1, startdate);
-      if (Yesterdayearn > 0) {
-        setYesterdayEarning(Yesterdayearn);
-      } else {
-        setYesterdayEarning(0);
-      }
-
-      setData({
-        labels: arr,
-        datasets: [
-          {
-            label: 'Daily Retunrs',
-            backgroundColor: chartdata.datasets[0].backgroundColor,
-            borderWidth: 1,
-            borderColor: chartdata.datasets[0].borderColor,
-            data: dataarr,
-          },
-        ],
-      });
-
-      if (dataarr.length > 7) {
-        let finalData = [];
-        let returnData = [];
-        let brandValues = dataarr.slice(dataarr.length - 6, dataarr.length - 1);
-        var brands = [
-          'Slyde Sports',
-          'Slides',
-          'Toy Universe',
-          'Clobbers',
-          'Klein Watches',
-        ];
-        brandValues.map((num, index) =>
-          finalData.push({ id: num, name: brands[index] })
-        );
-        let brandValuesSorted = brandValues.sort(function (a, b) {
-          return b - a;
-        });
-
-        brandValuesSorted.map((num) => {
-          finalData.map((val) => {
-            if (val.id === num) {
-              returnData.push(val.name);
-            }
-          });
-        });
-        setBrandNames(returnData);
-      }
-      let weeklySum = [];
-      if (dataarr.length > 7) {
-        let iterateNum = parseInt((dataarr.length / 7).toFixed(0));
-        let iterateTill = 0;
-        for (var index = 1; index < iterateNum + 1; index++) {
-          weeklySum.push(
-            dataarr.slice(iterateTill, 7 * index).reduce(function (a, b) {
-              return a + b;
-            }, 0)
-          );
-          iterateTill = 7 * index;
-        }
-
-        if (
-          dataarr.reduce(function (a, b) {
-            return a + b;
-          }) !==
-          weeklySum.reduce(function (a, b) {
-            return a + b;
-          })
-        ) {
-          weeklySum.push(
-            dataarr.slice(iterateTill, dataarr.lenght).reduce(function (a, b) {
-              return a + b;
-            }, 0)
-          );
-        }
-        let weekLabel = [];
-        weeklySum.map((num, index) => {
-          weekLabel.push('Week ' + (index + 1));
-        });
-        setPieData({
-          labels: weekLabel,
+      if (Currmonthdata.length === 0) {
+        var labelArray = month === 1 ? Array(28).fill(0) : Array(30).fill(0);
+        var arr = labelArray.map((fill, index) => index + 1);
+        var dataarr = month === 1 ? Array(28).fill(0) : Array(30).fill(0);
+        console.log(month);
+        setData({
+          labels: arr,
           datasets: [
             {
-              backgroundColor: [
-                '#2ecc71',
-                '#3498db',
-                '#95a5a6',
-                '#9b59b6',
-                '#f1c40f',
-                '#e74c3c',
-                '#34495e',
-              ],
-              data: weeklySum,
+              label: 'Daily Returns',
+              backgroundColor: chartdata.datasets[0].backgroundColor,
+              borderWidth: 1,
+              borderColor: chartdata.datasets[0].borderColor,
+              data: dataarr,
             },
           ],
         });
-        console.log(weeklySum);
-      }
-      function add_months(dt, n) {
-        return new Date(dt.setMonth(dt.getMonth() + n));
-      }
+      } else {
+        let arr = [];
+        let start = Currmonthdata[0].startDay;
+        let end = Currmonthdata[0].endDay;
+        for (let i = 0; i < 30; i++) {
+          if (start + i > 30) {
+            arr.push(start + i - 30);
+          } else {
+            arr.push(start + i);
+          }
+        }
+        setstarttoendArr(arr);
 
-      // setStartDate(`${parsedUserData.date.split('T')[0]}`);
-      let dt = new Date(`${parsedUserData.date.split('T')[0]}`);
-      let lastDate = add_months(dt, 6);
-      let endMonth = lastDate.getMonth();
-      let endDay = lastDate.getDate();
-      let endYear = lastDate.getFullYear();
+        //Daily Data
+        let dataarr = [];
+        let response = await fetch(
+          '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month,
+          {
+            method: 'get',
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        let data = await response.json();
+        let sum = 0;
 
-      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
+        data[0]?.dailyprofit.forEach((element) => {
+          if (Number(element) < 0) {
+            dataarr.push(0);
+          } else {
+            dataarr.push(Math.floor(Number(element)));
+            sum += Number(element);
+          }
+        });
+
+        let day = currentDay;
+        // day = 20;
+        let startdate = arr.indexOf(day);
+        dataarr.splice(startdate + 1, dataarr.length);
+        const todayprofit = dataarr.slice(startdate, startdate + 1);
+        if (todayprofit > 0) {
+          setTodayEarning(todayprofit);
+        } else {
+          setTodayEarning(0);
+        }
+
+        const Yesterdayearn = dataarr.slice(startdate - 1, startdate);
+        if (Yesterdayearn > 0) {
+          setYesterdayEarning(Yesterdayearn);
+        } else {
+          setYesterdayEarning(0);
+        }
+
+        setData({
+          labels: arr,
+          datasets: [
+            {
+              label: 'Daily Retunrs',
+              backgroundColor: chartdata.datasets[0].backgroundColor,
+              borderWidth: 1,
+              borderColor: chartdata.datasets[0].borderColor,
+              data: dataarr,
+            },
+          ],
+        });
+
+        if (dataarr.length > 7) {
+          let finalData = [];
+          let returnData = [];
+          let brandValues = dataarr.slice(
+            dataarr.length - 6,
+            dataarr.length - 1
+          );
+          var brands = [
+            'Slyde Sports',
+            'Slides',
+            'Toy Universe',
+            'Clobbers',
+            'Klein Watches',
+          ];
+          brandValues.map((num, index) =>
+            finalData.push({ id: num, name: brands[index] })
+          );
+          let brandValuesSorted = brandValues.sort(function (a, b) {
+            return b - a;
+          });
+
+          brandValuesSorted.map((num) => {
+            finalData.map((val) => {
+              if (val.id === num) {
+                returnData.push(val.name);
+              }
+            });
+          });
+          setBrandNames(returnData);
+        }
+        let weeklySum = [];
+        if (dataarr.length > 7) {
+          let iterateNum = parseInt((dataarr.length / 7).toFixed(0));
+          let iterateTill = 0;
+          for (var index = 1; index < iterateNum + 1; index++) {
+            weeklySum.push(
+              dataarr.slice(iterateTill, 7 * index).reduce(function (a, b) {
+                return a + b;
+              }, 0)
+            );
+            iterateTill = 7 * index;
+          }
+
+          if (
+            dataarr.reduce(function (a, b) {
+              return a + b;
+            }) !==
+            weeklySum.reduce(function (a, b) {
+              return a + b;
+            })
+          ) {
+            weeklySum.push(
+              dataarr
+                .slice(iterateTill, dataarr.lenght)
+                .reduce(function (a, b) {
+                  return a + b;
+                }, 0)
+            );
+          }
+          let weekLabel = [];
+          weeklySum.map((num, index) => {
+            weekLabel.push('Week ' + (index + 1));
+          });
+          setPieData({
+            labels: weekLabel,
+            datasets: [
+              {
+                backgroundColor: [
+                  '#2ecc71',
+                  '#3498db',
+                  '#95a5a6',
+                  '#9b59b6',
+                  '#f1c40f',
+                  '#e74c3c',
+                  '#34495e',
+                ],
+                data: weeklySum,
+              },
+            ],
+          });
+          console.log(weeklySum);
+        }
+        function add_months(dt, n) {
+          return new Date(dt.setMonth(dt.getMonth() + n));
+        }
+
+        // setStartDate(`${parsedUserData.date.split('T')[0]}`);
+        let dt = new Date(`${parsedUserData.date.split('T')[0]}`);
+        let lastDate = add_months(dt, 6);
+        let endMonth = lastDate.getMonth();
+        let endDay = lastDate.getDate();
+        let endYear = lastDate.getFullYear();
+
+        setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
+      }
     }
   };
 
@@ -553,11 +561,11 @@ export default function userpanel() {
     let arr2 = [];
     let dataarr = [];
 
-    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id , {
+    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id, {
       method: 'get',
       headers: {
         Authorization: token,
-      }
+      },
     });
     let firstmonthdata = await firstmonth.json();
 
@@ -583,11 +591,12 @@ export default function userpanel() {
       });
     } else {
       let resmonth = await fetch(
-        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt , {
+        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt,
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let monthdata = await resmonth.json();
@@ -600,11 +609,12 @@ export default function userpanel() {
         arr = [];
 
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + strtmnt , {
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt,
+          {
             method: 'get',
             headers: {
               Authorization: token,
-            }
+            },
           }
         );
         let data = await responseRange.json();
@@ -643,11 +653,12 @@ export default function userpanel() {
         arr = [];
         arr2 = [];
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + strtmnt , {
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt,
+          {
             method: 'get',
             headers: {
               Authorization: token,
-            }
+            },
           }
         );
         let resstrtdata = await responseRange.json();
@@ -671,11 +682,12 @@ export default function userpanel() {
         }
 
         let resendmnth = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + endmnt , {
+          '/user/investorsdailyreturns/' + _id + '/' + endmnt,
+          {
             method: 'get',
             headers: {
               Authorization: token,
-            }
+            },
           }
         );
         let resenddata = await resendmnth.json();
@@ -711,11 +723,12 @@ export default function userpanel() {
         for (let i = 0; i <= diffinmnth; i++) {
           if (i == 0) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i),
+              {
                 method: 'get',
                 headers: {
                   Authorization: token,
-                }
+                },
               }
             );
             let resstrtdata = await responseRange.json();
@@ -737,11 +750,12 @@ export default function userpanel() {
             }
           } else if (i == diffinmnth) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i),
+              {
                 method: 'get',
                 headers: {
                   Authorization: token,
-                }
+                },
               }
             );
             let resstrtdata = await responseRange.json();
@@ -763,11 +777,12 @@ export default function userpanel() {
             }
           } else {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i),
+              {
                 method: 'get',
                 headers: {
                   Authorization: token,
-                }
+                },
               }
             );
             let resstrtdata = await responseRange.json();
@@ -879,7 +894,7 @@ export default function userpanel() {
                                 console.log(currentMonth);
                                 var d = new Date();
                                 d.setMonth(currentMonth - 1);
-                                d.setDate(value);
+                                d.setDate(value + 1);
                                 return d.toDateString();
                               },
                             },
