@@ -38,13 +38,18 @@ export default class Mydoc extends Document {
             href='https://cdn.quilljs.com/1.3.6/quill.snow.css'
             rel='stylesheet'
           />
-
           <link
             rel='stylesheet'
             href='//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'
           />
           {/* <!-- jQuery --> */}
           <script src='jquery/dist/jquery.min.js'></script>
+          <style>
+          body {
+            background: url('../img/background.png') no-repeat !important;
+            background-size: contain;
+          }
+          </style>
         </Head>
         <body>
           <Main />
