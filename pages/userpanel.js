@@ -51,47 +51,37 @@ export default function userpanel() {
   useEffect(() => {
     let userData = JSON.parse(localStorage.getItem('userData'));
 
-    if( userData ){
-
+    if (userData) {
       function add_months(dt, n) {
         return new Date(dt.setMonth(dt.getMonth() + n));
       }
-  
+
       setStartDate(`${userData.date.split('T')[0]}`);
       let dt = new Date(`${userData.date.split('T')[0]}`);
       let lastDate = add_months(dt, 6);
       let endMonth = lastDate.getMonth();
       let endDay = lastDate.getDate();
       let endYear = lastDate.getFullYear();
-  
-     
-  
-      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
-    
-    }
 
-  
+      setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
+    }
   }, []);
 
-  var token ; 
-  if(typeof window == 'object'){
-
+  var token;
+  if (typeof window == 'object') {
     const gettokenfromLocalstorage = localStorage.getItem('token');
-     token = `Bearer ${gettokenfromLocalstorage}`;
+    token = `Bearer ${gettokenfromLocalstorage}`;
   }
 
   const handleSelect = (e) => {
     if (e.target.value == 'Last Month') {
       handleLastMonthGraph();
-
     } else if (e.target.value == 'This Month') {
       thismonthgraph();
     } else if (e.target.value == 'All Time') {
       Alltimegraph();
-      
     } else if (e.target.value == 'Last 7 Days') {
       Last7daysgraph();
-
     } else if (e.target.value == 'Range') {
       setmodalshow(true);
     }
@@ -99,17 +89,18 @@ export default function userpanel() {
 
   //Last 7 Days
   const Last7daysgraph = async () => {
-    setCurrentMonth(new Date().getMonth()  ) 
+    setCurrentMonth(new Date().getMonth());
     let { _id } = userData;
     let month = currentMonth;
     let day = currentDay;
     // day = 14;
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + _id + '/' + month , {
+      '/user/investorsmonthlyreturns/' + _id + '/' + month,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let Currmonthdata = await apiCall.json();
@@ -121,11 +112,12 @@ export default function userpanel() {
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + _id + '/' + month , {
+      '/user/investorsdailyreturns/' + _id + '/' + month,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let data = await response.json();
@@ -140,26 +132,25 @@ export default function userpanel() {
     });
 
     for (let i = 0; i < data[0]?.dailyprofit.length; i++) {
-     
-        arr.push(i);
-      
+      arr.push(i);
     }
 
     // console.log('d1', dataarr);
 
-    let NumberofDays = arr.indexOf(day)   ;
+    let NumberofDays = arr.indexOf(day);
     // console.log(NumberofDays);
     // console.log(arr);
-    console.log('dt' , dataarr)
+    console.log('dt', dataarr);
     if (NumberofDays > 6) {
       dataarr = dataarr.slice(NumberofDays - 6, NumberofDays + 1);
     } else {
       let resData = await fetch(
-        '/user/investorsdailyreturns/' + _id + '/' + (month - 1) , {
+        '/user/investorsdailyreturns/' + _id + '/' + (month - 1),
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let lastMonthDays = await resData.json();
@@ -172,15 +163,13 @@ export default function userpanel() {
       } else {
         newLastDays = new Array(7 - NumberofDays).fill(0);
       }
-      console.log( 'nmbrdays' , NumberofDays)
+      console.log('nmbrdays', NumberofDays);
       dataarr = newLastDays.concat(dataarr.slice(0, NumberofDays));
     }
 
-    console.log('dt' , dataarr) 
-    console.log('day' , arr.indexOf(day) , day) 
-    console.log( 'newLastDays' , newLastDays)
-
-
+    console.log('dt', dataarr);
+    console.log('day', arr.indexOf(day), day);
+    console.log('newLastDays', newLastDays);
 
     arr = [];
     for (let i = 0; i < 7; i++) {
@@ -210,16 +199,15 @@ export default function userpanel() {
   //All TIme
 
   const Alltimegraph = async () => {
-    setCurrentMonth(new Date().getMonth() ) 
+    setCurrentMonth(new Date().getMonth());
     let { _id } = userData;
-    let month =   currentMonth
-    
-    ;
-    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id , {
+    let month = currentMonth;
+
+    let allmonth = await fetch('/user/investorsmonthlyreturns/' + _id, {
       method: 'get',
       headers: {
         Authorization: token,
-      }
+      },
     });
     let allmonthdata = await allmonth.json();
 
@@ -233,9 +221,9 @@ export default function userpanel() {
     });
 
     let startmonth = allmonthdata[0].month;
-    console.log(startmonth)
+    console.log(startmonth);
     let diff = month - startmonth > 0 ? month - startmonth : startmonth - month;
-    console.log(diff , dataarr)
+    console.log(diff, dataarr);
 
     dataarr.splice(diff, dataarr.length);
 
@@ -260,11 +248,12 @@ export default function userpanel() {
     let lastmonthCalc = month - 1 < 0 ? 11 : month - 1;
 
     let apiCall = await fetch(
-      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc , {
+      '/user/investorsmonthlyreturns/' + _id + '/' + lastmonthCalc,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let Currmonthdata = await apiCall.json();
@@ -272,22 +261,23 @@ export default function userpanel() {
     let arr = [];
     // let start = Currmonthdata.length > 0 ? Currmonthdata[0].startDay : 0;
     // let end = Currmonthdata.length > 0 ? Currmonthdata[0].endDay : 30;
-   
+
     // setstarttoendArr(arr);
 
     //Daily Data
     let dataarr = [];
     let response = await fetch(
-      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc , {
+      '/user/investorsdailyreturns/' + _id + '/' + lastmonthCalc,
+      {
         method: 'get',
         headers: {
           Authorization: token,
-        }
+        },
       }
     );
     let data = await response.json();
     let sum = 0;
-    setCurrentMonth(new Date().getMonth() - 1 ) 
+    setCurrentMonth(currentMonth - 1);
     data[0]?.dailyprofit.forEach((element) => {
       if (Number(element) < 0) {
         dataarr.push(0);
@@ -296,14 +286,12 @@ export default function userpanel() {
         sum += Number(element);
       }
     });
-    console.log(data)
-let noofdays =  data.length > 0   ?  data[0].dailyprofit.length : 30 ; 
-    for (let i = 1; i <= noofdays ; i++) {
-    
-        arr.push(i);
-      
+    console.log(data);
+    let noofdays = data.length > 0 ? data[0].dailyprofit.length : 30;
+    for (let i = 1; i <= noofdays; i++) {
+      arr.push(i);
     }
-console.log(arr)
+    console.log(arr);
     setData({
       labels: arr,
       datasets: [
@@ -316,12 +304,11 @@ console.log(arr)
         },
       ],
     });
-
   };
 
   //This Month Graph Function
   const thismonthgraph = async () => {
-    setCurrentMonth(new Date().getMonth() ) 
+    setCurrentMonth(new Date().getMonth());
 
     const userDatas = localStorage.getItem('userData');
     let parsedUserData = await JSON.parse(userDatas);
@@ -347,27 +334,27 @@ console.log(arr)
       // setLastmonthdata(dataLastmonthly[0]);
 
       let apiCall = await fetch(
-        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month , {
+        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month,
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let Currmonthdata = await apiCall.json();
 
       // console.log(' curr monthly returns', Currmonthdata);
 
-  
-
       //Daily Data
       let dataarr = [];
       let response = await fetch(
-        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month , {
+        '/user/investorsdailyreturns/' + parsedUserData._id + '/' + month,
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let data = await response.json();
@@ -382,13 +369,12 @@ console.log(arr)
         }
       });
 
-
       let arr = [];
-      
-      for (let i = 1 ; i <= data[0].dailyprofit.length; i++) {
-          arr.push(i);
+
+      for (let i = 1; i <= data[0].dailyprofit.length; i++) {
+        arr.push(i);
       }
-      console.log(arr)
+      console.log(arr);
 
       let day = currentDay;
       // day = 20;
@@ -480,7 +466,7 @@ console.log(arr)
           weekLabel.push('Week ' + (index + 1));
         });
         setPieData({
-          labels: weekLabel ,
+          labels: weekLabel,
           datasets: [
             {
               backgroundColor: [
@@ -571,11 +557,11 @@ console.log(arr)
     let arr2 = [];
     let dataarr = [];
 
-    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id , {
+    let firstmonth = await fetch('/user/investorsmonthlyreturns/' + _id, {
       method: 'get',
       headers: {
         Authorization: token,
-      }
+      },
     });
     let firstmonthdata = await firstmonth.json();
 
@@ -601,11 +587,12 @@ console.log(arr)
       });
     } else {
       let resmonth = await fetch(
-        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt , {
+        '/user/investorsmonthlyreturns/' + _id + '/' + strtmnt,
+        {
           method: 'get',
           headers: {
             Authorization: token,
-          }
+          },
         }
       );
       let monthdata = await resmonth.json();
@@ -618,11 +605,12 @@ console.log(arr)
         arr = [];
 
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + strtmnt , {
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt,
+          {
             method: 'get',
             headers: {
               Authorization: token,
-            }
+            },
           }
         );
         let data = await responseRange.json();
@@ -634,7 +622,7 @@ console.log(arr)
             dataarr.push(Math.floor(Number(element)));
           }
         });
-        console.log(data[0]?.dailyprofit)
+        console.log(data[0]?.dailyprofit);
         for (let i = strday; i <= endday; i++) {
           if (i > 30) {
             arr.push(i - 30);
@@ -642,10 +630,10 @@ console.log(arr)
             arr.push(i);
           }
         }
-        console.log(dataarr)
+        console.log(dataarr);
 
-        dataarr.splice(0, strday-1);
-        console.log( 'las'  ,dataarr)
+        dataarr.splice(0, strday - 1);
+        console.log('las', dataarr);
 
         setData({
           labels: arr,
@@ -663,11 +651,12 @@ console.log(arr)
         arr = [];
         arr2 = [];
         let responseRange = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + strtmnt , {
+          '/user/investorsdailyreturns/' + _id + '/' + strtmnt,
+          {
             method: 'get',
             headers: {
               Authorization: token,
-            }
+            },
           }
         );
         let resstrtdata = await responseRange.json();
@@ -679,9 +668,9 @@ console.log(arr)
             dataarr.push(Math.floor(Number(element)));
           }
         });
-      //   console.log(dataarr)
-      //  dataarr =  dataarr.splice(strday, endday);
-      //  console.log(dataarr)
+        //   console.log(dataarr)
+        //  dataarr =  dataarr.splice(strday, endday);
+        //  console.log(dataarr)
 
         for (let i = strday; i < resstrtdata[0]?.dailyprofit.length; i++) {
           if (i > 30) {
@@ -692,11 +681,12 @@ console.log(arr)
         }
 
         let resendmnth = await fetch(
-          '/user/investorsdailyreturns/' + _id + '/' + endmnt , {
+          '/user/investorsdailyreturns/' + _id + '/' + endmnt,
+          {
             method: 'get',
             headers: {
               Authorization: token,
-            }
+            },
           }
         );
         let resenddata = await resendmnth.json();
@@ -732,11 +722,12 @@ console.log(arr)
         for (let i = 0; i <= diffinmnth; i++) {
           if (i == 0) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i),
+              {
                 method: 'get',
                 headers: {
                   Authorization: token,
-                }
+                },
               }
             );
             let resstrtdata = await responseRange.json();
@@ -758,11 +749,12 @@ console.log(arr)
             }
           } else if (i == diffinmnth) {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i),
+              {
                 method: 'get',
                 headers: {
                   Authorization: token,
-                }
+                },
               }
             );
             let resstrtdata = await responseRange.json();
@@ -784,11 +776,12 @@ console.log(arr)
             }
           } else {
             let responseRange = await fetch(
-              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i) , {
+              '/user/investorsdailyreturns/' + _id + '/' + (strtmnt + i),
+              {
                 method: 'get',
                 headers: {
                   Authorization: token,
-                }
+                },
               }
             );
             let resstrtdata = await responseRange.json();
@@ -823,6 +816,12 @@ console.log(arr)
     }
   };
 
+  const Formate = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'K'
+      : Math.sign(num) * Math.abs(num);
+  };
+
   return (
     <Layout>
       {/* <!-- page content --> */}
@@ -834,20 +833,20 @@ console.log(arr)
               <span className='count_top'>
                 <i className='fa fa-dollar'></i> Total Amount Invest
               </span>
-              <div className='count green'>{userData.amount}</div>
+              <div className='count green'>{Formate(userData.amount)}</div>
             </div>
             <div className='col-md-3 col-sm-4  tile_stats_count'>
               <span className='count_top'>
                 <i className='fa fa-clock-o'></i> Today Earning{' '}
               </span>
-              <div className='count blue'>{TodayEarning}</div>
+              <div className='count blue'>{Formate(TodayEarning)}</div>
               {/* <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>3% </i> From last Week</span> */}
             </div>
             <div className='col-md-3 col-sm-4  tile_stats_count'>
               <span className='count_top'>
                 <i className='fa fa-clock'></i> Yesterday Earning
               </span>
-              <div className='count purple'>{YesterdayEarning}</div>
+              <div className='count purple'>{Formate(YesterdayEarning)}</div>
               {/* <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>34% </i> From last Week</span> */}
             </div>
             <div className='col-md-3 col-sm-4  tile_stats_count'>
@@ -897,21 +896,27 @@ console.log(arr)
                             ticks: {
                               beginAtZero: true,
                               callback: function (value, index, values) {
-                                console.log(value , index ,values );
-                                let month = currentMonth
-                                if( values.indexOf(1) !== 0 && values.length == 7 ){
-                                 month =   index < values.indexOf(1)  ? month -1 : month
+                                console.log(value, index, values);
+                                let month = currentMonth;
+                                if (
+                                  values.indexOf(1) !== 0 &&
+                                  values.length == 7
+                                ) {
+                                  month =
+                                    index < values.indexOf(1)
+                                      ? month - 1
+                                      : month;
                                 }
 
                                 var d = new Date();
-                              let  newmonth =  Math.floor(index / 30)
-                                d.setMonth(month + newmonth );  
+                                let newmonth = Math.floor(index / 30);
+                                d.setMonth(month + newmonth);
 
                                 d.setDate(value);
-                              
 
-                                  return  typeof value == "string"  ? value :  d.toDateString();
-                                
+                                return typeof value == 'string'
+                                  ? value
+                                  : d.toDateString();
                               },
                             },
                           },
