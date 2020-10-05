@@ -5,8 +5,9 @@ export default class Mydoc extends Document {
     return (
       <html>
         <Head>
+        <title>Investor Portal | GrowthHopper</title>
           <meta name='next app' desciption='First app' />
-
+          <link rel="icon" type="image/png" sizes="16x16" href="/gh.png" />
           <link href='bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' />
 
           <link href='font-awesome/css/font-awesome.min.css' rel='stylesheet' />
