@@ -89,7 +89,7 @@ export default function userpanel() {
 
   //Last 7 Days
   const Last7daysgraph = async () => {
-    setCurrentMonth(new Date().getMonth());
+    // setCurrentMonth(new Date().getMonth());
     let { _id } = userData;
     let month = currentMonth;
     let day = currentDay;
