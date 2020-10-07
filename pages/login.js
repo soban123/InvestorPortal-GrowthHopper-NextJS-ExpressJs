@@ -86,7 +86,7 @@ const Login = (props) => {
           <div className='animate form login_form'>
             <section className='login_content mt-5 pt-5'>
               <div className='row'>
-                <div className='col-6 text-right'>
+                <div className='col-md-6 col-sm-12'>
                   <div className='mt-5'>
                     <img
                       className='mt-5 img img-responsive w-50'
@@ -96,42 +96,44 @@ const Login = (props) => {
                 </div>
                 <div
                   style={{ borderWidth: '4px' }}
-                  className='col-6 border-left text-left'
+                  className='col-md-6 col-sm-12 '
                 >
-                  <form className='mr-5 pr-5'>
-                    <div>
-                      <label>Email</label>
-                      <input
-                        value={email}
-                        id='email'
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                        }}
-                        type='email'
-                        className='form-control w-50'
-                      />
-                    </div>
-                    <div>
-                      <label>Password</label>
-                      <input
-                        value={password}
-                        id='password'
-                        type='password'
-                        className='form-control w-50'
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <button
-                        className='btn btn-secondary submit'
-                        onClick={handleSubmit}
-                      >
-                        Log in
-                      </button>
-                    </div>
-                  </form>
+                  <div className="ml-auto mr-auto text-center" >
+                      <form className=' form2 '>
+                        <div>
+                          <label>Email</label>
+                          <input
+                            value={email}
+                            id='email'
+                            onChange={(e) => {
+                              setEmail(e.target.value);
+                            }}
+                            type='email'
+                            className='form-control w-70'
+                          />
+                        </div>
+                        <div>
+                          <label>Password</label>
+                          <input
+                            value={password}
+                            id='password'
+                            type='password'
+                            className='form-control w-70'
+                            onChange={(e) => {
+                              setPassword(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <button
+                            className='btn btn-secondary submit'
+                            onClick={handleSubmit}
+                          >
+                            Log in
+                          </button>
+                        </div>
+                      </form>
+                  </div>
                 </div>
               </div>
             </section>
@@ -145,6 +147,23 @@ const Login = (props) => {
         <p className='m-0'>GrowthHopper</p>
         <p className='m-0'>Copyrights &copy; 2020. All rights reserved.</p>
       </footer>
+      <style global jsx>
+          {`
+           
+            @media only screen and (max-width: 600px) {
+              .form2 { 
+                padding: 0px 33px;
+              }
+            }
+           
+            @media only screen and (min-width: 992px) {
+              .form2 { 
+                text-align: left;
+                padding-right: 145px;
+              }
+            }
+          `}
+        </style>
     </div>
   );
 };

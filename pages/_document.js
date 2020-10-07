@@ -5,7 +5,6 @@ export default class Mydoc extends Document {
     return (
       <html>
         <Head>
-        <title>Investor Portal | GrowthHopper</title>
           <meta name='next app' desciption='First app' />
           <link rel="icon" type="image/png" sizes="16x16" href="/gh.png" />
           <link href='bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' />
@@ -94,8 +93,8 @@ export default class Mydoc extends Document {
           <script src='//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'></script>
           <script src='https://cdn.quilljs.com/1.3.6/quill.js'></script>
 
-          {/* <!-- Custom Theme Scripts --> */}
-          <script src={'./build/js/custom.min.js'}></script>
+          {/* <!-- Custom Theme Scripts -->
+          <script src={'/build/js/custom.min.js'}></script> */}
 
           <script src='https://cdn.quilljs.com/1.3.6/quill.js'></script>
 

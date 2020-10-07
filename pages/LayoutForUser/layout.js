@@ -3,9 +3,12 @@ import Sidebar from '../Components/Sidebar';
 import Topnav from '../Components/topnav';
 import FooterContent from '../Components/footercontents';
 import Router from 'next/router';
+import Head from 'next/head';
+
 export default function layout(props) {
   let [userData, setuserData] = useState({ role: '' });
 
+    
   useEffect(() => {
     console.log('user');
     const userDataFromLocal = localStorage.getItem('userData');
@@ -19,7 +22,19 @@ export default function layout(props) {
     }
   }, []);
   return (
-    <div className='nav-md'>
+    <>
+    <Head>
+    <title>Investor Portal | GrowthHopper</title>
+
+       
+          <script src={'/static/custom.js'}></script>
+          <script src={'/build/js/custom.min.js'}></script>
+
+
+
+       
+      </Head>
+    <div id="navid" className='nav-md'>
       <div className='container body'>
         <div className='main_container'>
           <div className='col-md-3 left_col'>
@@ -65,5 +80,6 @@ export default function layout(props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

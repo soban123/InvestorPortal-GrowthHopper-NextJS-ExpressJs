@@ -3,6 +3,8 @@ import Sidebar from '../Components/Sidebar';
 import Topnav from '../Components/topnav';
 import FooterContent from '../Components/footercontents';
 import Router from 'next/router';
+import Head from 'next/head';
+
 export default function layout(props) {
   let [userData, setuserData] = useState({ role: '' });
 
@@ -27,6 +29,17 @@ export default function layout(props) {
   }, []);
 
   return (
+    <>
+      <Head>
+    <title>Investor Portal | GrowthHopper</title>
+    <link href='/build/css/custom.min.css' rel='stylesheet' />
+       <script src='/build/js/custom.min.js'></script>
+        {/* <!-- Bootstrap --> */}
+        <script src='bootstrap/dist/js/bootstrap.bundle.min.js'></script>
+
+
+       
+      </Head>
     <div className='nav-md'>
       <div className='container body'>
         <div className='main_container'>
@@ -73,5 +86,6 @@ export default function layout(props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

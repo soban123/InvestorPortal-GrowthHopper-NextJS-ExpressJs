@@ -6,6 +6,7 @@ export default function index() {
     <div>
       <Head>
         <title> Home Page </title>
+       
       </Head>
       <Login />
     </div>
