@@ -4,23 +4,31 @@ import Layout from './LayoutForUser/layout';
 export default function userreports() {
   const [reports, setReports] = useState([]);
 
-  var token ; 
-  if(typeof window == 'object'){
-
+  var token;
+  if (typeof window == 'object') {
     const gettokenfromLocalstorage = localStorage.getItem('token');
-     token = `Bearer ${gettokenfromLocalstorage}`;
+    token = `Bearer ${gettokenfromLocalstorage}`;
   }
 
   useEffect(() => {
-
     fetch('/reports/get', {
       method: 'get',
       headers: {
         Authorization: token,
-      }
+      },
     })
       .then((res) => res.json())
       .then((data) => setReports(data));
+
+    window.$('#navid').on('click', function () {
+      if (window.$('#navid').hasClass('nav-md')) {
+        window.$('#navid').removeClass('nav-md');
+        window.$('#navid').addClass('nav-sm');
+      } else {
+        window.$('#navid').removeClass('nav-sm');
+        window.$('#navid').addClass('nav-md');
+      }
+    });
   }, []);
 
   return (

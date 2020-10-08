@@ -99,7 +99,7 @@ export default function Sidebar() {
                 </Link>
               </li> */}
               <li>
-                <a href='https://wa.me/03362009368'>
+                <a target='_blank' href='https://wa.me/+923362009368'>
                   <i className='fa fa-phone'></i> TALK AGENT{' '}
                 </a>
               </li>

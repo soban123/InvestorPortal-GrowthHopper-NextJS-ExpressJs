@@ -102,7 +102,7 @@ function init_sidebar() {
   // toggle small or large menu
   $MENU_TOGGLE.on('click', function () {
     console.log('on');
-    if ($("#navid").hasClass('nav-md')) {
+    if ($('#navid').hasClass('nav-md')) {
       $('#navid').removeClass('nav-md');
       $('#navid').addClass('nav-sm');
       // $SIDEBAR_MENU.find('li.active ul').hide();
@@ -3230,10 +3230,10 @@ function init_morris_charts() {
       resize: true,
     });
 
-    $MENU_TOGGLE.on('click', function () {
-      $(window).resize();
-      console.log('on');
-    });
+    // $MENU_TOGGLE.on('click', function () {
+    //   $(window).resize();
+    //   console.log('on');
+    // });
   }
 }
 

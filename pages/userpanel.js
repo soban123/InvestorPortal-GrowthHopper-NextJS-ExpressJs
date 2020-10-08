@@ -65,6 +65,18 @@ export default function userpanel() {
 
       setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
     }
+
+    thismonthgraph();
+
+    window.$('#navid').on('click', function () {
+      if (window.$('#navid').hasClass('nav-md')) {
+        window.$('#navid').removeClass('nav-md');
+        window.$('#navid').addClass('nav-sm');
+      } else {
+        window.$('#navid').removeClass('nav-sm');
+        window.$('#navid').addClass('nav-md');
+      }
+    });
   }, []);
 
   var token;
@@ -498,10 +510,6 @@ export default function userpanel() {
       setendDate(`${endYear}-${Number(endMonth) + 1}-${endDay}`);
     }
   };
-
-  useEffect(() => {
-    thismonthgraph();
-  }, []);
 
   const [chartdata, setData] = useState({
     labels: [],
@@ -995,7 +1003,7 @@ export default function userpanel() {
                 <h5>End Date: {endDate}</h5>
                 <hr />
                 For renewal talk to agent.{' '}
-                <a href='https://wa.me/03362009368'>Click here</a>
+                <a href='https://wa.me/+923362009368'>Click here</a>
               </div>
             </div>
           </div>
