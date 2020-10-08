@@ -101,28 +101,32 @@ function init_sidebar() {
 
   // toggle small or large menu
   $MENU_TOGGLE.on('click', function () {
-    console.log('on')
-    if ($BODY.hasClass('nav-md')) {
-      $SIDEBAR_MENU.find('li.active ul').hide();
-      $SIDEBAR_MENU
-        .find('li.active')
-        .addClass('active-sm')
-        .removeClass('active');
+    console.log('on');
+    if ($("#navid").hasClass('nav-md')) {
+      $('#navid').removeClass('nav-md');
+      $('#navid').addClass('nav-sm');
+      // $SIDEBAR_MENU.find('li.active ul').hide();
+      // $SIDEBAR_MENU
+      //   .find('li.active')
+      //   .addClass('active-sm')
+      //   .removeClass('active');
     } else {
-      $SIDEBAR_MENU.find('li.active-sm ul').show();
-      $SIDEBAR_MENU
-        .find('li.active-sm')
-        .addClass('active')
-        .removeClass('active-sm');
+      $('#navid').addClass('nav-md');
+      $('#navid').removeClass('nav-sm');
+      // $SIDEBAR_MENU.find('li.active-sm ul').show();
+      // $SIDEBAR_MENU
+      //   .find('li.active-sm')
+      //   .addClass('active')
+      //   .removeClass('active-sm');
     }
 
-    $BODY.toggleClass('nav-md nav-sm');
+    // $BODY.toggleClass('nav-md nav-sm');
 
-    setContentHeight();
+    // setContentHeight();
 
-    $('.dataTable').each(function () {
-      $(this).dataTable().fnDraw();
-    });
+    // $('.dataTable').each(function () {
+    //   $(this).dataTable().fnDraw();
+    // });
   });
 
   // check active menu
@@ -858,7 +862,7 @@ function init_sparklines() {
       height: '125',
       barWidth: 13,
       colorMap: {
-        '7': '#a1a1a1',
+        7: '#a1a1a1',
       },
       barSpacing: 2,
       barColor: '#26B99A',
@@ -872,7 +876,7 @@ function init_sparklines() {
       height: '40',
       barWidth: 9,
       colorMap: {
-        '7': '#a1a1a1',
+        7: '#a1a1a1',
       },
       barSpacing: 2,
       barColor: '#26B99A',
@@ -900,7 +904,7 @@ function init_sparklines() {
       height: '40',
       barWidth: 8,
       colorMap: {
-        '7': '#a1a1a1',
+        7: '#a1a1a1',
       },
       barSpacing: 2,
       barColor: '#26B99A',
@@ -926,7 +930,7 @@ function init_sparklines() {
     {
       type: 'bar',
       colorMap: {
-        '7': '#a1a1a1',
+        7: '#a1a1a1',
       },
       barColor: '#26B99A',
     }
@@ -3228,8 +3232,7 @@ function init_morris_charts() {
 
     $MENU_TOGGLE.on('click', function () {
       $(window).resize();
-    console.log('on')
-
+      console.log('on');
     });
   }
 }
