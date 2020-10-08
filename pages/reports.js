@@ -8,7 +8,14 @@ export default function reports() {
   const [updateReports, setUpdateReports] = useState({ title: '' });
 
   useEffect(() => {
-    fetch('/reports/get')
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
+
+    fetch('/reports/get' ,{
+      headers: {
+        Authorization: token,
+      }
+    } )
       .then((res) => res.json())
       .then((data) => setReports(data));
   }, []);
@@ -16,6 +23,7 @@ export default function reports() {
   const handleDelete = (id) => {
     const gettokenfromLocalstorage = localStorage.getItem('token');
     const token = `Bearer ${gettokenfromLocalstorage}`;
+
     fetch('/reports/delete/' + id, {
       method: 'delete',
       headers: {
@@ -34,7 +42,14 @@ export default function reports() {
   };
 
   const handleEdit = (id) => {
-    fetch('/reports/' + id)
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
+    
+    fetch('/reports/' + id , {
+      headers: {
+        Authorization: token,
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         setUpdateReports(data);

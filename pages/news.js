@@ -8,8 +8,14 @@ export default function news() {
   const [updateNews, setUpdateNews] = useState({ title: '', text: '' });
   const [quilVar, setQuilVar] = useState('');
   useEffect(() => {
+    const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
 
-    fetch('/news/get')
+    fetch('/news/get' ,  {
+      headers: {
+        'Authorization': token,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setNews(data));
 
@@ -37,9 +43,9 @@ export default function news() {
     fetch('/news/delete/' + id, {
       method: 'delete',
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: token,
+        'Authorization': token,
       },
     })
       .then(function (response) {
@@ -53,21 +59,31 @@ export default function news() {
 
   const handleEdit = (id) => {
   
-    
+     const gettokenfromLocalstorage = localStorage.getItem('token');
+    const token = `Bearer ${gettokenfromLocalstorage}`;
 
-      var quill = new window.Quill('#editor', {
-        theme: 'snow',
-      });
-      quill.on('text-change', function (delta, oldDelta, source) {
-        setUpdateNews({
-           id ,
-          title: document.getElementById('middle-name').value,
-          text: quill.root.innerHTML,
+    
+   
+      
+      // var quill = new window.Quill('#editor', {
+      //   theme: 'snow',
+      // });
+      var quill = quilVar ; 
+        quill.on('text-change', function (delta, oldDelta, source) {
+          setUpdateNews({
+             id ,
+            title: document.getElementById('middle-name').value,
+            text: quill.root.innerHTML,
+          });
         });
-      });
+      
    
 
-    fetch('/news/' + id )
+    fetch('/news/' + id ,  {
+      headers: {
+        'Authorization': token,
+      },
+    } )
       .then((res) => res.json())
       .then((data) => {
         setUpdateNews({ title: data.title, text: data.text , id : data._id });

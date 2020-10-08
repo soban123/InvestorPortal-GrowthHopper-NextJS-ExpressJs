@@ -32,9 +32,9 @@ function adminpanelshowusers(props) {
     fetch('/user/update/' + userData.id, {
       method: 'put',
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: token,
+        'Authorization': token,
       },
       body: JSON.stringify(userData),
     })
@@ -54,7 +54,7 @@ function adminpanelshowusers(props) {
     fetch('/user' , {
       method: 'get',
       headers: {
-        Authorization: tokens,
+        'Authorization': tokens,
       },
     })
       .then((res) => res.json())
@@ -72,9 +72,9 @@ function adminpanelshowusers(props) {
     fetch('/user/block/' + id, {
       method: 'put',
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: token,
+        'Authorization': token,
       },
     })
       .then(function (response) {
@@ -90,9 +90,9 @@ function adminpanelshowusers(props) {
     fetch('/user/active/' + id, {
       method: 'put',
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: token,
+        'Authorization': token,
       },
     })
       .then(function (response) {
