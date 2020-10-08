@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 
-export default function topnav({ userData, sidebarToggle, toggleSideBar }) {
+export default function topnav({ userData }) {
   const handleLogout = () => {
     localStorage.removeItem('login');
     localStorage.removeItem('userData');
