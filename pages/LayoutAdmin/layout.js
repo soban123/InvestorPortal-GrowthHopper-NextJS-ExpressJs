@@ -45,7 +45,7 @@ export default function layout(props) {
                 <div className='navbar nav_title' style={{ border: 0 }}>
                   <a href='/' className='site_title text-center px-4'>
                     <img
-                      src='http://growthhopper.com/img/Growth_Hopper_Logo.png'
+                      src='https://growthhopper.com/img/Growth_Hopper_Logo.png'
                       className='img img-responsive w-100'
                     />
                   </a>
@@ -57,7 +57,7 @@ export default function layout(props) {
                   <div className='profile_pic'>
                     <img
                       style={{ background: '#000' }}
-                      src='http://growthhopper.com/img/gh-spiral.png'
+                      src='https://growthhopper.com/img/gh-spiral.png'
                       alt='...'
                       className='img-circle profile_img'
                     />

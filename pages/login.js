@@ -90,7 +90,7 @@ const Login = (props) => {
                   <div className='mt-5'>
                     <img
                       className='mt-5 img img-responsive w-50'
-                      src='http://growthhopper.com/img/gh-ip-logo.png'
+                      src='https://growthhopper.com/img/gh-ip-logo.png'
                     />
                   </div>
                 </div>
