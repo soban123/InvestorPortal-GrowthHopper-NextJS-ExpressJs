@@ -937,7 +937,7 @@ export default function userpanel() {
           <div className='col-md-4 col-sm-4 pb-3'>
             <div className='x_panel tile'>
               <div className='x_title'>
-                <h5>Top Earning Brands This Week</h5>
+                <h5>Weekly Returns Breakdown</h5>
               </div>
               <div style={{ height: '277px' }} className='x_content'>
                 <ul className='pl-1'>
@@ -972,7 +972,7 @@ export default function userpanel() {
           <div className='col-md-4 col-sm-4 pb-3'>
             <div className='x_panel tile'>
               <div className='x_title'>
-                <h5>Top Earning Brands This Week</h5>
+                <h5>Weekly Returns Breakdown</h5>
               </div>
               <div style={{ height: '277px' }} className='x_content py-5'>
                 <Pie
