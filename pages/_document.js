@@ -98,6 +98,10 @@ export default class Mydoc extends Document {
 
           <script src='https://cdn.quilljs.com/1.3.6/quill.js'></script>
 
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" type="text/javascript"></script>
+
           <script src={'/static/custom.js'}></script>
         </body>
         <style global jsx>
