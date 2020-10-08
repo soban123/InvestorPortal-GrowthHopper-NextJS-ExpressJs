@@ -7,7 +7,7 @@ import Head from 'next/head';
 
 export default function layout(props) {
   let [userData, setuserData] = useState({ role: '' });
-
+  let [sidebarToggle, setSidebarToggle] = useState(false);
   useEffect(() => {
     const userDataFromLocal = localStorage.getItem('userData');
     if (userDataFromLocal) setuserData(JSON.parse(userDataFromLocal));
@@ -15,7 +15,13 @@ export default function layout(props) {
     if (isLogin !== 'true') {
       Router.push('/login');
     }
+    console.log('SIDEBAR CHANGED 1st', sidebarToggle);
   }, []);
+
+  useEffect(() => {
+    console.log('SIDEBAR CHANGED ', sidebarToggle);
+  }, [sidebarToggle]);
+
   return (
     <>
       <Head>
@@ -24,7 +30,7 @@ export default function layout(props) {
         <script src={'/static/custom.js'}></script>
         <script src={'/build/js/custom.min.js'}></script>
       </Head>
-      <div id='navid' className='nav-md'>
+      <div id='navid' className={sidebarToggle ? 'nav-sm' : 'nav-md'}>
         <div className='container body'>
           <div className='main_container'>
             <div className='col-md-3 left_col'>
@@ -61,9 +67,25 @@ export default function layout(props) {
                 <Sidebar />
               </div>
             </div>
-
-            <Topnav userData={userData} />
-
+            <div>
+              {/* <!-- top navigation --> */}
+              <div className='top_nav'>
+                <div className='nav_menu'>
+                  <div className='nav toggle'>
+                    <a
+                      id='menu_toggle'
+                      onClick={() =>
+                        setSidebarToggle(sidebarToggle ? false : true)
+                      }
+                    >
+                      <i className='fa fa-bars'></i>
+                    </a>
+                  </div>
+                  <Topnav userData={userData} />
+                </div>
+              </div>
+              {/* <!-- /top navigation --> */}
+            </div>
             {props.children}
 
             <FooterContent />

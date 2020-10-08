@@ -68,15 +68,7 @@ export default function userpanel() {
 
     thismonthgraph();
 
-    window.$('#navid').on('click', function () {
-      if (window.$('#navid').hasClass('nav-md')) {
-        window.$('#navid').removeClass('nav-md');
-        window.$('#navid').addClass('nav-sm');
-      } else {
-        window.$('#navid').removeClass('nav-sm');
-        window.$('#navid').addClass('nav-md');
-      }
-    });
+    console.log('USE EFFECR RAN');
   }, []);
 
   var token;
@@ -904,7 +896,6 @@ export default function userpanel() {
                             ticks: {
                               beginAtZero: true,
                               callback: function (value, index, values) {
-                                console.log(value, index, values);
                                 let month = currentMonth;
                                 if (
                                   values.indexOf(1) !== 0 &&

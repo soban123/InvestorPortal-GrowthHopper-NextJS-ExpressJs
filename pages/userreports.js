@@ -19,16 +19,6 @@ export default function userreports() {
     })
       .then((res) => res.json())
       .then((data) => setReports(data));
-
-    window.$('#navid').on('click', function () {
-      if (window.$('#navid').hasClass('nav-md')) {
-        window.$('#navid').removeClass('nav-md');
-        window.$('#navid').addClass('nav-sm');
-      } else {
-        window.$('#navid').removeClass('nav-sm');
-        window.$('#navid').addClass('nav-md');
-      }
-    });
   }, []);
 
   return (
