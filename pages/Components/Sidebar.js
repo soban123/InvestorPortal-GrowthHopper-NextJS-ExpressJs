@@ -18,11 +18,9 @@ export default function Sidebar() {
             <h3>General</h3>
             <ul className='nav side-menu'>
               <li>
-                <Link href='/adminpanelshowusers'>
-                  <a>
-                    <i className='fa fa-home'></i> HOME{' '}
-                  </a>
-                </Link>
+                <a href='/adminpanelshowusers'>
+                  <i className='fa fa-home'></i> HOME{' '}
+                </a>
               </li>
               <li>
                 <Link href='/adminpanel'>
@@ -66,11 +64,9 @@ export default function Sidebar() {
             <h3>General</h3>
             <ul className='nav side-menu'>
               <li>
-                <Link href='/userpanel'>
-                  <a>
-                    <i className='fa fa-home'></i> HOME{' '}
-                  </a>
-                </Link>
+                <a href='/userpanel'>
+                  <i className='fa fa-home'></i> HOME{' '}
+                </a>
               </li>
               <li>
                 <Link href='/usernews'>

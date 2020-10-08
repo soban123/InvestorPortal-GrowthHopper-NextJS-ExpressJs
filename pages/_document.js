@@ -6,7 +6,7 @@ export default class Mydoc extends Document {
       <html>
         <Head>
           <meta name='next app' desciption='First app' />
-          <link rel="icon" type="image/png" sizes="16x16" href="/gh.png" />
+          <link rel='icon' type='image/png' sizes='16x16' href='/gh.png' />
           <link href='bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' />
 
           <link href='font-awesome/css/font-awesome.min.css' rel='stylesheet' />
@@ -88,7 +88,7 @@ export default class Mydoc extends Document {
           <script src='raphael/raphael.min.js'></script>
           <script src='morris.js/morris.min.js'></script>
 
-          <script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+          {/* <script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script> */}
           <script src='//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'></script>
           <script src='//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'></script>
           <script src='https://cdn.quilljs.com/1.3.6/quill.js'></script>
