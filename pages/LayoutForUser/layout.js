@@ -15,12 +15,7 @@ export default function layout(props) {
     if (isLogin !== 'true') {
       Router.push('/login');
     }
-    console.log('SIDEBAR CHANGED 1st', sidebarToggle);
   }, []);
-
-  useEffect(() => {
-    console.log('SIDEBAR CHANGED ', sidebarToggle);
-  }, [sidebarToggle]);
 
   return (
     <>
