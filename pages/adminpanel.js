@@ -9,7 +9,7 @@ function adminPanel(props) {
   let [email, setEmail] = useState('');
   let [password, setPassword] = useState('');
   let [amount, setamount] = useState('');
-  let [packages, setpackages] = useState('');
+  let [packages, setpackages] = useState(3);
   const [CRIShowHide, setCRI] = useState('hide');
 
   const router = useRouter()
@@ -25,6 +25,7 @@ function adminPanel(props) {
       toast.addEventListener('mouseleave', Swal.resumeTimer);
     },
   });
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,8 +56,10 @@ function adminPanel(props) {
           title: 'Investor Added',
         });
         router.push('/adminpanelshowusers')
-      });
-
+      })
+      .catch(err => { Swal.fire('Oops...', 'Something went wrong!', 'error') 
+        console.log(err)
+    } )
 
       fetch(`http://support.growthhopper.com/setuser/${email}/${password}`)
       .then(res => res.json())
@@ -65,8 +68,8 @@ function adminPanel(props) {
   };
 
   const handleCRI = (e) => {
-    setpackages(e.target.value);
-    e.target.value == '' ? setCRI('show') : setCRI('hide');
+    e.target.value == ' ' ?  ' ' :  setpackages(+e.target.value);
+    e.target.value == ' ' ? setCRI('show') : setCRI('hide');
   };
 
   return (
@@ -183,23 +186,33 @@ function adminPanel(props) {
                           className='custom-select'
                         >
                           <option selected>Choose Package</option>
-                          <option value=''>Custom</option>
-                          <option value='3%'>3% MRR</option>
-                          <option value='4%'>4% MRR</option>
-                          <option value='5%'>5% MRR</option>
-                          <option value={packages}>{packages}</option>
+                          <option value='3' selected>3% MRR</option>
+                          <option value='4'>4% MRR</option>
+                          <option value='5'>5% MRR</option>
+                          <option value=' '>Custom</option>  
                         </select>
                         <div
                           className={CRIShowHide == 'show' ? 'show' : 'hide'}
                         >
                           <p> Write your custom percentage : </p>
+                          <label for="middle-name" >Start Range</label>
                           <input
                             id='middle-name'
                             className='form-control'
                             value={packages}
-                            placeholder=''
-                            type='text'
+                            placeholder='5'
+                            type='number'
                             onChange={(e) => setpackages(e.target.value)}
+                            name='middle-name'
+                            required
+                          />
+                             <label for="middle-name" >End Range</label>
+                          <input
+                            id='middle-name'
+                            className='form-control'
+                            value={ Number(packages) + 0.5  }
+                            type='number'
+                            disabled = "true"
                             name='middle-name'
                             required
                           />

@@ -203,15 +203,16 @@ router.post('/', async function (req, res, next) {
     var arr = [];
     while (arr.length < 6) {
       var r = Math.floor(Math.random() * 6);
+      r = r /10  ;
       if (arr.indexOf(r) === -1) arr.push(r);
     }
 
-    let calPackageperc = package.split('')[0];
+    let calPackageperc = package.includes(".") ?   +package.split('.')[0] : +package ; 
+    let afterpointNumber =  package.includes(".") ?   +package.split('.')[1] : 0 ; 
     var extraMonthArray = [];
     for (let i = 0; i < 6; i++) {
       var revenue = (amount * (calPackageperc + arr[i])) / 1000;
-      var packageprecent = (calPackageperc + arr[i]) / 10;
-
+      var packageprecent = Number(calPackageperc) + arr[i] + (Number(afterpointNumber)/10) ;
       const monthlyreturns = new investorsmonthlyreturns({
         email,
         userId: postUser._id,
