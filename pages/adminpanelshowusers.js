@@ -60,7 +60,13 @@ function adminpanelshowusers(props) {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
-      });
+      })
+      .catch(err => {
+        localStorage.removeItem('token')
+          localStorage.removeItem('userData')
+        localStorage.removeItem('login')
+        window.location.reload()
+      }) ;
   }, []);
 
   const handleCRI = (e) => {

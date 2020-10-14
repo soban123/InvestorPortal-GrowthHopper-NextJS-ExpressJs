@@ -337,16 +337,24 @@ export default function userpanel() {
       // console.log('monthly returns' ,dataLastmonthly   )
       // setLastmonthdata(dataLastmonthly[0]);
 
-      let apiCall = await fetch(
-        '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month,
-        {
-          method: 'get',
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      let Currmonthdata = await apiCall.json();
+      try{
+        let apiCall = await fetch(
+          '/user/investorsmonthlyreturns/' + parsedUserData._id + '/' + month,
+          {
+            method: 'get',
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+  
+        
+        let Currmonthdata = await apiCall.json();
+      }
+      catch{
+        localStorage.removeItem('token')
+        window.location.reload()
+      }
 
       // console.log(' curr monthly returns', Currmonthdata);
 
